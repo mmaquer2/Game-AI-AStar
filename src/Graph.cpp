@@ -1,5 +1,6 @@
 #include "../include/Graph.h"
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
@@ -7,21 +8,21 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 
 	for (int i = 0; i < input.size(); i++) {
 
-		vector<Node> rowArr;
+		vector<Node> rowArr; //temp row vector
 		
 		for (int j = 0; j < input[i].size(); j++) {
 
 			char temp = input[i][j];
 			Node tempNode(i, j);
-			// if the tempNode is the value of X it's not passable location of the map
+			// if the tempNode is the value of X it's not a passable location on the map
 			if (temp == 'X') {
 				tempNode.passable = false;
 				tempNode.nodeCost = -1;
 			} 
-			//if the node is passable set bool to true, and record the weight of the node Cost
+			//if the node is passable set bool to true, and record the weight of the node cost
 			else {
 				tempNode.passable = true;
-				int tempCost = (int)temp - 48;
+				int tempCost = (int)temp - 48; //due to unicode values have to subtract 48 to get the correct int value
 				tempNode.nodeCost = tempCost;
 
 			}
@@ -35,32 +36,45 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 		}
 
 		graph.push_back(rowArr); //push the current row back onto the graph
-
-
 	}
 
-	
 
-	findNodeNeighbors();
+    //set the height and width of the graph to check boundries
+    height = 4;
+    width = 4;
 
-
-}
-
-
-
-void Graph::calculateNeighbors() {
-	//for every node in the graph, assign the reference to the node location in the graph vector
-
-	//as the neighbors for that node, in order to later reference their cost, f,g, and h values
-
-	//get the indexes of the neighbors
-
-	//for those indexes, a reference to that assigned to the resepective 
-
+    findNodeNeighbors(); //find all neighbor nodes in the graph
 
 
 }
 
+//calculate the starting g,f,h values for all nodes with respect to the start and end node
+void Graph::calculateHValues(string hType, int end[2]) {
+
+    cout << "calculating H Values" << endl;
+        //have each node calculate its own neighbors in the graph
+        for (int i = 0; i < graph.size(); i++) {
+            for (int j = 0; j < graph[i].size(); j++) {
+
+                Node temp = graph[i][j];
+                //temp.h =
+                //graph[i][j].calculateNeighbors();
+
+            }
+
+        }
+
+}
+
+int Graph::HeuristicCalc(string heuristic, Node temp, int end[2]) {
+
+    int hValue = 0;
+
+
+
+    return hValue;
+
+}
 
 
 
@@ -74,8 +88,6 @@ void Graph::findNodeNeighbors() {
 
 		}
 
-
-		
 	}
 
 }

@@ -7,12 +7,39 @@
 #include "../include/Node.h"
 #include "../include/Graph.h"
 
-
 using namespace std;
 
+// helper function to check if a neighbor already exists in the openSet
+bool neighborInOpenSet(Graph input, Node node){
+    bool status = false;
+    //check if the node is not in the openSet
+    // for (int i = 0; i < openSet.size(); i++) {
+    // Node temp = openSet[i];
+    // if (temp == tempNeighbor) {
+    //   status = true;
+    //}
+
+    //}
+
+    return status;
+
+}
 
 
-//  C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
+//Helper function to check if node is in bounds
+bool inBounds(int x, int y, int height,int width){
+    if( (x >= 0) &&
+        (y >= 0) &&
+        (x<= height) &&
+        (y <= height) &&
+        (x <=width) &&
+        (y <= width))
+    {return true;}
+    else {return false;}
+}
+
+
+// /Users/michaelmaquera/school/a-star/data/project1.txt
 void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph )
 {
     // Start the timer
@@ -39,47 +66,32 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
     Node endNode = nodeGraph.graph[endX][endY];  //get the end node from the graph
     
    openSet.push_back(startNode); //insert start node to open container
-   bool pathDiscovred = false; // set discovered path boolean to false
+   bool pathDiscovered = false; // set discovered path boolean to false
 
-    while (openSet.size() > 0) {
+    while (!openSet.empty()) {
 
-       Node currentNode = openSet.front(); //get node at front of openList
-       currentNode.expanded = true; // set the current node expnaded flag to true
+       Node currentNode = openSet.back(); //get node at front of openList
+       currentNode.expanded = true; // set the current node expanded flag to true
        currentNode.discovered = true; // set the temp node to discovered flag to true
-       openSet.pop_back(); //remove the top element just recieved 
-
+       openSet.pop_back(); //remove the top element just received
        closedSet.push_back(currentNode); //insert current node into the closedSet
-
-       cout << "current node cost: " << currentNode.nodeCost << endl;
-
-
+       cout << "current node cost: " << currentNode.nodeCost << endl; //uncomment to see what neighbors are being tested
        //check if destination has been reached  
-       if (currentNode.getLocation() == endNode.getLocation() ) {            
-           pathDiscovred = true; //the closed set now contains the final path from start to finish
+       if (currentNode.getLocation() == endNode.getLocation() ) {
+           pathDiscovered = true; //the closed set now contains the final path from start to finish
             break;
        }
-
-       std::cout << "looking at neighbors --->" << endl;
-     
        for (int i = 0; i < currentNode.neighbors.size(); ++i) {
-
            array<int, 2> tempCoors = currentNode.neighbors[i]; // get the coordinates of the neighbor
-           
-           cout << "neighbor coordinates" << tempCoors[0] << tempCoors[1] << endl;
-           
-           //check if the neighbor is valid within the graph:
-           //TO DO: 
-           //also need to check the width of the neighbors as well
-           if ((tempCoors[0] >= 0) && (tempCoors[1] >= 0)  ) {
+           cout << "current neighbor coordinate: " << tempCoors[0] << tempCoors[1] << endl;
+           //check if the neighbor is valid within the graph boundary and is passable
+           if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
 
-               
+               //Finding all th
+
                Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
-
-               tempNeighbor.discovered = true; //set the neighbornode to discovered 
-
-
+               tempNeighbor.discovered = true; //set the neighbor node to discovered
                 //calculate cost of the new node
-
                // g = the movement cost to move from the starting point to a given square on the grid, following the path generated to get there. 
                // h = the estimated movement cost to move from that given square on the grid to the final destination.This is often referred to as the heuristic,
                // f = sum of g and h
@@ -87,49 +99,32 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                 //TODO:
                // How to properly calculate the values of f,g,h
 
-               int tentativeCost = currentNode.g + (currentNode.g + tempNeighbor.g);
+               tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
+
+               //tempNeighbor.h =
+               tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
+
+               int tentativeCost = currentNode.nodeCost + (currentNode.g + tempNeighbor.g);
 
                cout << "cost for add this neighbor node:  " << tentativeCost << endl;
 
                bool neighborInOpen = false;
 
-               //check if the node is not in the openSet
-              // for (int i = 0; i < openSet.size(); i++) {
-                  // Node temp = openSet[i];
-                  // if (temp == tempNeighbor) {
-                    //   neighborInOpen = true;
-                  // }
-
-               //}
-
+               // the f value of the starting node should be higher than the any neighbor near it...
                // if this path to the neighbor is better than the previous path
-               if ((tentativeCost < tempNeighbor.g) || neighborInOpen ) {
+
+               if ((tempNeighbor.f < currentNode.f) || neighborInOpen ) {
 
                    cout << "accepting the tentative cost of the new neighbor node " << endl;
-                   
-                   //cameFrom[neighbor] == current;
-                   //currentNeighbors[i].cameFrom = currentNode;
-                
-                   tempNeighbor.g = tentativeCost;
-                   //tempNeighbor.h = tentativeCost + h(tempNeighbor);
-
-                   //TODO: how to properly use the find function for a Node object
-                 
-                     openSet.push_back(tempNeighbor);
-                  
+                   openSet.push_back(tempNeighbor);
 
                }
-               
-
 
            }
 
        } 
 
     }
-
-    //if open set is empty and goal was never reached == this was a failure cannot find an open path
-
 
     // Stop the timer
     steady_clock::time_point clock_end = steady_clock::now();
@@ -140,103 +135,48 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
     std::cout << "It took " << seconds << " seconds.";
     std::cout << endl;
 
-    //if a path cannot be found... return -1, report notice path not found...
-    //if (pathDiscovred == false) {
-        
-            //cout << "A path could not be found" << endl;
+    if (!pathDiscovered) {
+        cout << "A path could not be found with the given graph" << endl;
 
-    //}
+    }
+    else {
 
-    //else {
+        // Annotate & print the output map
+        //vector<vector<char>> outputMap = inputMap;
 
-        
+        //create a new output file
+        string outputPath = "outputPath.txt";
+        //s = start node
+        //d = destination node
+        //+ = path node
+        //t = touched/discovered noe
+        //e = expnaded nodes
 
+        //iterate through the examined/modified inputMap and
 
-    //}
+        //TODO Annotate the map based on the mode selected
 
-    // Annotate & print the output map
-    //vector<vector<char>> outputMap = inputMap;
+        if (mode == Expanded) {
 
+            std::cout << " creating expanded view";
 
+        }
 
-    // YOUR CODE RESUMES HERE
-    // Annotate the output map with your path, along with expanded nodes and fringe nodes 
-    // (if the mode calls for them)
+        if (mode == All) {
 
-    //create a new output file
-    string outputPath = "outputPath.txt";
-    //s = start node
-    //d = destination node
-    //+ = path node
-    //t = touched/discovered noe
-    //e = expnaded nodes
-
-    //iterate through the examined/modified inputMap and 
+            std::cout << " creating all view";
 
 
-    //Annotate the map based on the mode selected 
+        }
 
-
-    if (mode == Expanded) {
-
-        std::cout << " creating expanded view";
+        std::cout << endl;
+        std::cout << "the output map is:";
+        std::cout << endl;
+        PrintMap(inputMap);
 
     }
 
-    if (mode == All) {
-
-        std::cout << " creating all view";
-
-
-    }
-
-
-
-    std::cout << endl;
-    std::cout << "the output map is:";
-    std::cout << endl;
-    PrintMap(inputMap);
 }
-
-
-
-
-
-//Heuristic Functions
-
-
-int MhtnFunction() {
-
-
-    return 0;
-}
-
-
-int LinearFunction() {
-
-
-    return 0;
-}
-
-//Mode Functions
-
-int StandardFunction() {
-
-
-    return 0;
-}
-
-
-int ExpandFunction() {
-
-    return 0;
-}
-
-int AllFunction() {
-
-    return 0;
-}
-
 
 
 
@@ -268,14 +208,18 @@ int Test() {
     heuristicType = "Manhattan";
     eHeuristic heuristic = convertHeuristic(heuristicType);
 
+
     // Start Coordintes:
     start[0] = 0;
     start[1] = 0;
     cout << endl;
 
     //End Coordinates:
-    end[0] = 2;
-    end[1] = 2;
+    end[0] = 0;
+    end[1] = 1;
+
+    //Create starting hValues
+    //nodeGraph.calculateHValues(heuristicType, end);
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 
@@ -332,8 +276,6 @@ void testGraph() {
 
     //cout << "Fetch neighbor test x: " << testGraph.graph[1].neighbors[0][0] << endl;
     //cout << "Fetch neighbor test y: " << testGraph.graph[1].neighbors[0][1] << endl;
-
-
 
 }
 

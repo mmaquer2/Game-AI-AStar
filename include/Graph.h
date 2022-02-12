@@ -14,11 +14,14 @@ class Graph {
 	public:
 	
 	vector<vector<Node>> graph;
+    int width;
+    int height;
 
 	Graph(std::vector<std::vector<char>>& PathMap);
-	void calculateNeighbors();
-	void findNodeNeighbors();
 
+	void findNodeNeighbors();
+    void calculateHValues(string hType, int end[2]);
+    int HeuristicCalc(string hType, Node temp, int end[2]);
 
 
 

@@ -12,34 +12,6 @@
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
 Building on a MacOS system.
--- Found SFML 2.5.1 in /Library/Frameworks/SFML.framework/Resources/CMake
--- Found OpenCV: /usr/local/Cellar/opencv/4.5.4 (found version "4.5.4") 
--- Found OpenGL: /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/OpenGL.framework   
 -- Configuring done
-CMake Error at CMakeLists.txt:68 (add_executable):
-  Cannot find source file:
-
-    ./src/Server.cpp
-
-  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
-  .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
-
-
-CMake Error at CMakeLists.txt:65 (add_executable):
-  Cannot find source file:
-
-    ./src/main.cpp
-
-  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
-  .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
-
-
-CMake Error at CMakeLists.txt:68 (add_executable):
-  No SOURCES given to target: App_Test
-
-
-CMake Error at CMakeLists.txt:65 (add_executable):
-  No SOURCES given to target: App
-
-
-CMake Generate step failed.  Build files cannot be regenerated correctly.
+-- Generating done
+-- Build files have been written to: /Users/michaelmaquera/school/a-star/cmake-build-debug

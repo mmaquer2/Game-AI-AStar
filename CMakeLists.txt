@@ -35,7 +35,7 @@ set (SRC_LIST
         ./src/Node.cpp
         ./src/Graph.cpp
         ./src/test.cpp
-        )
+        include/AStar.h)
 
 # create exccutable for main App
 add_executable(App ${SRC_LIST})
