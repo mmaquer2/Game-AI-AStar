@@ -84,32 +84,44 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
        currentNode.discovered = true; // set the temp node to discovered flag to true
        openSet.pop_back(); //remove the top element just received
        closedSet.push_back(currentNode); //insert current node into the closedSet
+
+       //calculate the f,g,h of the current node...
+        currentNode.g = currentNode.nodeCost ;
+        currentNode.h = manhattan(currentNode.xCoord, currentNode.yCoord, endX, endY);
+        currentNode.f = currentNode.g + currentNode.h;
+
+        cout<< " current g: "<< currentNode.g << endl;
+        cout<< "current h: "<< currentNode.h << endl;
+        cout<< "current f: "  << currentNode.f << endl;
+
+
        cout << "current node cost: " << currentNode.nodeCost << endl; //uncomment to see what neighbors are being tested
        //check if destination has been reached  
        if (currentNode.getLocation() == endNode.getLocation() ) {
+           std::cout << "end node found!" << endl;
            pathDiscovered = true; //the closed set now contains the final path from start to finish
-            break;
+           break;
        }
        for (int i = 0; i < currentNode.neighbors.size(); ++i) {
            array<int, 2> tempCoors = currentNode.neighbors[i]; // get the coordinates of the neighbor
-           cout << "current neighbor coordinate: " << tempCoors[0] << tempCoors[1] << endl;
+           cout << "current neighbor coordinate: " << tempCoors[0] << " , " <<tempCoors[1] << endl;
            //check if the neighbor is valid within the graph boundary and is passable
            if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
 
                Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                tempNeighbor.discovered = true; //set the neighbor node to discovered
 
+               //calculate the f,g,h of the selected neighbor node:
                tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
                tempNeighbor.h = manhattan(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
                tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
+               cout<< "temp g: "<< tempNeighbor.g << endl;
+               cout<< "temp h: "<< tempNeighbor.h << endl;
+               cout<< "temp f: "  << tempNeighbor.f << endl;
 
-               bool neighborInOpen = false;
-
-               // if this path to the neighbor is better than the previous path
-               // calculate the tempNeighbor and current node costs of traveling
-
-               if ((tempNeighbor.f < currentNode.f) || neighborInOpen ) {
+               // compare the f values of the current node and neighbors:
+               if ((tempNeighbor.f < currentNode.f) ) {
 
                    cout << "accepting the tentative cost of the new neighbor node " << endl;
                    openSet.push_back(tempNeighbor);
@@ -137,6 +149,16 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
     }
     else {
 
+
+        cout <<"printing path..." << endl;
+        for(int i = 0; i <closedSet.size();i++){
+
+            Node temp = closedSet[i];
+            std::cout << temp.xCoord << "," << temp.yCoord << endl;
+
+        }
+        cout <<"path complete..." << endl;
+
         // Annotate & print the output map
         //vector<vector<char>> outputMap = inputMap;
 
@@ -160,7 +182,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
         if (mode == All) {
 
-            std::cout << " creating all view";
+            std::cout << " creating all view" << endl;
 
 
         }
@@ -212,10 +234,10 @@ int Test() {
 
     //End Coordinates:
     end[0] = 0;
-    end[1] = 1;
+    end[1] = 4;
 
     //Create starting hValues
-    nodeGraph.calculateHValues(heuristicType, end);
+    //nodeGraph.calculateHValues(heuristicType, end);
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 

@@ -1,31 +1,21 @@
-//
-// Created by Michael Maquera on 2/12/22.
-//
-
 #ifndef PATH_FINDING_ASTAR_H
 #define PATH_FINDING_ASTAR_H
 
 class AStar {
 
+public:
 
-    AStar(){
+    AStar();
 
+    int graphHeight;
+    int graphWidth;
 
+    void findPath();
 
-    }
+    bool inBounds();
 
-
-    void findPath(){
-
-
-
-    }
-
-
-
-
-
-
+    int manhattanDistance();
+    int linearDistance();
 
 
 };
