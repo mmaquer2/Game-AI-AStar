@@ -233,8 +233,10 @@ int Test() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 0;
-    end[1] = 4;
+    end[0] = 3;
+    end[1] = 2;
+
+    //working combos so far, start: 0,0  to 0,4 , 0,0 to 3,0 , 0,0 to 3,1 ,3,2
 
     //Create starting hValues
     //nodeGraph.calculateHValues(heuristicType, end);

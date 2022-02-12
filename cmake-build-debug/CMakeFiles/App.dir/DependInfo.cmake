@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/michaelmaquera/school/a-star/src/AStar.cpp" "CMakeFiles/App.dir/src/AStar.cpp.o" "gcc" "CMakeFiles/App.dir/src/AStar.cpp.o.d"
   "/Users/michaelmaquera/school/a-star/src/Graph.cpp" "CMakeFiles/App.dir/src/Graph.cpp.o" "gcc" "CMakeFiles/App.dir/src/Graph.cpp.o.d"
   "/Users/michaelmaquera/school/a-star/src/Node.cpp" "CMakeFiles/App.dir/src/Node.cpp.o" "gcc" "CMakeFiles/App.dir/src/Node.cpp.o.d"
+  "/Users/michaelmaquera/school/a-star/src/main.cpp" "CMakeFiles/App.dir/src/main.cpp.o" "gcc" "CMakeFiles/App.dir/src/main.cpp.o.d"
   "/Users/michaelmaquera/school/a-star/src/test.cpp" "CMakeFiles/App.dir/src/test.cpp.o" "gcc" "CMakeFiles/App.dir/src/test.cpp.o.d"
   )
 
