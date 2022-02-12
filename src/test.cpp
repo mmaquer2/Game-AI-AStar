@@ -3,9 +3,9 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
-#include "Project1.h"
-#include "Node.h"
-#include "Graph.h"
+#include "../include/Project1.h"
+#include "../include/Node.h"
+#include "../include/Graph.h"
 
 
 using namespace std;

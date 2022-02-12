@@ -1,0 +1,3 @@
+/Users/michaelmaquera/school/a-star/CMakeFiles/App.dir
+/Users/michaelmaquera/school/a-star/CMakeFiles/edit_cache.dir
+/Users/michaelmaquera/school/a-star/CMakeFiles/rebuild_cache.dir

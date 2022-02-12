@@ -7,6 +7,10 @@
 
 
 ## Run and Test
+    - with cmake, mac os, clion
+
+
+    - with windows visual studio
 
 
 ## Resources: 
