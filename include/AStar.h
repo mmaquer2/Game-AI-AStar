@@ -1,23 +1,31 @@
 #ifndef PATH_FINDING_ASTAR_H
 #define PATH_FINDING_ASTAR_H
 
+#include <chrono>
+#include <unordered_map>
+#include <queue>
+#include <vector>
+#include <algorithm>
+#include "../include/Project1.h"
+#include "../include/Node.h"
+#include "../include/Graph.h"
+#include <math.h>
+
 class AStar {
 
 public:
 
-    AStar();
-
     int graphHeight;
     int graphWidth;
 
-    void findPath();
+    void findPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph);
 
-    bool inBounds();
+    bool inBounds(int x, int y, int height,int width);
+    int manhattanDistance(int x, int y, int endX, int endY);
+    int linearDistance(int x, int y, int endX, int endY);
 
-    int manhattanDistance();
-    int linearDistance();
-
-
+    int getHeight();
+    int getWidth();
 };
 
 

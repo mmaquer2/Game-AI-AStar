@@ -73,11 +73,18 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
     Node startNode = nodeGraph.graph[startX][startY];  //get the starting node from the graph
     Node endNode = nodeGraph.graph[endX][endY];  //get the end node from the graph
+
+    //check if start and end nodes are passable
+    if(!startNode.passable || !endNode.passable){
+        cout <<" ERROR: selected a unpassable node as the start or end node" << endl;
+        return;
+    }
     
    openSet.push_back(startNode); //insert start node to open container
    bool pathDiscovered = false; // set discovered path boolean to false
 
     while (!openSet.empty()) {
+
 
        Node currentNode = openSet.back(); //get node at front of openList
        currentNode.expanded = true; // set the current node expanded flag to true
@@ -111,26 +118,31 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                tempNeighbor.discovered = true; //set the neighbor node to discovered
 
-               //calculate the f,g,h of the selected neighbor node:
-               tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
-               tempNeighbor.h = manhattan(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
-               tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
+               if(tempNeighbor.passable == true){
+                   //calculate the f,g,h of the selected neighbor node:
+                   tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
+                   tempNeighbor.h = manhattan(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
+                   tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
-               cout<< "temp g: "<< tempNeighbor.g << endl;
-               cout<< "temp h: "<< tempNeighbor.h << endl;
-               cout<< "temp f: "  << tempNeighbor.f << endl;
+                   cout<< "temp g: "<< tempNeighbor.g << endl;
+                   cout<< "temp h: "<< tempNeighbor.h << endl;
+                   cout<< "temp f: "  << tempNeighbor.f << endl;
 
-               // compare the f values of the current node and neighbors:
-               if ((tempNeighbor.f < currentNode.f) ) {
+                   // compare the f values of the current node and neighbors:
+                   if ((tempNeighbor.f < currentNode.f) ) {
 
-                   cout << "accepting the tentative cost of the new neighbor node " << endl;
-                   openSet.push_back(tempNeighbor);
+                       cout << "accepting the tentative cost of the new neighbor node " << endl;
+                       openSet.push_back(tempNeighbor);
+
+                   }
 
                }
 
+
+
            }
 
-       } 
+       }
 
     }
 
@@ -227,19 +239,16 @@ int Test() {
     eHeuristic heuristic = convertHeuristic(heuristicType);
 
 
-    // Start Coordintes:
+    // Start Coordinates:
     start[0] = 0;
     start[1] = 0;
     cout << endl;
 
     //End Coordinates:
-    end[0] = 3;
-    end[1] = 2;
+    end[0] = 1;
+    end[1] = 1;
 
     //working combos so far, start: 0,0  to 0,4 , 0,0 to 3,0 , 0,0 to 3,1 ,3,2
-
-    //Create starting hValues
-    //nodeGraph.calculateHValues(heuristicType, end);
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 
