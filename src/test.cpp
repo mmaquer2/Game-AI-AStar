@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-//  C:\Users\mikem\OneDrive\Desktop\Project1\data\project1.txt
+//  C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
 void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph )
 {
     // Start the timer
@@ -23,7 +23,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
     vector<Node>gScore;
     vector<Node>fScore;
     vector<Node> cameFrom; //container for track when the current best path
-    //vector<int> totalCost;
+    vector<int> totalCost;
 
     vector<Node> openSet; //container for tracking currently exmained code
     vector<Node> closedSet; //container for tracking exhausted nodes
@@ -283,7 +283,7 @@ int Test() {
 }
 
 
-// C:\Users\mikem\OneDrive\Desktop\Project1\data\project1.txt
+// C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
 void testNode() {
 
     //read input map function...
@@ -315,7 +315,7 @@ void testNode() {
 
 }
 
-// C:\Users\mikem\OneDrive\Desktop\Project1\data\project1.txt
+// C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
 void testGraph() {
     vector<vector<char>> inputMap;
     string loc;
@@ -338,7 +338,7 @@ void testGraph() {
 }
 
 
-//     C:\Users\mikem\OneDrive\Desktop\Project1\data\project1.txt
+//  C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
 // Program Entry: 
 int main()
 {
