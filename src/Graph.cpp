@@ -1,6 +1,5 @@
 #include "../include/Graph.h"
 #include <vector>
-#include <math.h>
 
 using namespace std;
 
@@ -57,19 +56,31 @@ void Graph::calculateHValues(string hType, int end[2]) {
             for (int j = 0; j < graph[i].size(); j++) {
 
                 Node temp = graph[i][j];
-                //temp.h =
-                //graph[i][j].calculateNeighbors();
+
+                int result = HeuristicCalc(hType, temp, end);
+                temp.h = result;
+                temp = graph[i][j];
+
+                cout << temp.h << " h value is" << endl;
 
             }
-
         }
-
 }
 
-int Graph::HeuristicCalc(string heuristic, Node temp, int end[2]) {
+int Graph::HeuristicCalc(string hType, Node temp, int end[2]) {
 
-    int hValue = 0;
+    int hValue = 22;
 
+    if(hType == "Manhattan"){
+
+        hValue = 301;
+
+
+
+    } else{
+
+
+    }
 
 
     return hValue;

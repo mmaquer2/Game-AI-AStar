@@ -1,7 +1,10 @@
 # Project One A-Star
 
--	Demo for the A - Star algorithm in C++ for CS 5150 Game AI at Northeastern University
-
+- Demo for the A - Star algorithm in C++ for CS 5150 Game AI at Northeastern University
+-  //calculate cost of the new node
+   // g = the movement cost to move from the starting point to a given square on the grid, following the path generated to get there.
+   // h = the estimated movement cost to move from that given square on the grid to the final destination.This is often referred to as the heuristic,
+   // f = sum of g and h
 ## Set up 
 	- 
 

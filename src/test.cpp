@@ -6,6 +6,7 @@
 #include "../include/Project1.h"
 #include "../include/Node.h"
 #include "../include/Graph.h"
+#include <math.h>
 
 using namespace std;
 
@@ -38,6 +39,17 @@ bool inBounds(int x, int y, int height,int width){
     else {return false;}
 }
 
+int manhattan(int x, int y, int endX, int endY){
+    int dx = fabs( x - endX);
+    int dy = fabs(y - endY);
+    int avgDiff = 2; // the avg difference of all nodes
+
+    return avgDiff * (dx + dy);
+
+
+}
+
+
 
 // /Users/michaelmaquera/school/a-star/data/project1.txt
 void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph )
@@ -46,9 +58,6 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
     using namespace chrono;
     steady_clock::time_point clock_begin = steady_clock::now();
 
-
-    vector<Node>gScore;
-    vector<Node>fScore;
     vector<Node> cameFrom; //container for track when the current best path
     vector<int> totalCost;
 
@@ -87,31 +96,18 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
            //check if the neighbor is valid within the graph boundary and is passable
            if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
 
-               //Finding all th
-
                Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                tempNeighbor.discovered = true; //set the neighbor node to discovered
-                //calculate cost of the new node
-               // g = the movement cost to move from the starting point to a given square on the grid, following the path generated to get there. 
-               // h = the estimated movement cost to move from that given square on the grid to the final destination.This is often referred to as the heuristic,
-               // f = sum of g and h
-
-                //TODO:
-               // How to properly calculate the values of f,g,h
 
                tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
-
-               //tempNeighbor.h =
+               tempNeighbor.h = manhattan(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
                tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
-               int tentativeCost = currentNode.nodeCost + (currentNode.g + tempNeighbor.g);
-
-               cout << "cost for add this neighbor node:  " << tentativeCost << endl;
 
                bool neighborInOpen = false;
 
-               // the f value of the starting node should be higher than the any neighbor near it...
                // if this path to the neighbor is better than the previous path
+               // calculate the tempNeighbor and current node costs of traveling
 
                if ((tempNeighbor.f < currentNode.f) || neighborInOpen ) {
 
@@ -219,7 +215,7 @@ int Test() {
     end[1] = 1;
 
     //Create starting hValues
-    //nodeGraph.calculateHValues(heuristicType, end);
+    nodeGraph.calculateHValues(heuristicType, end);
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 
