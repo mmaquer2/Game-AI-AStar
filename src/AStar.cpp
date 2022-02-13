@@ -21,7 +21,6 @@ AStar::AStar() {
 
     //modeType = "Standard";
     //eMode mode = convertMode(modeType);
-
     //heuristicType = "Manhattan";
     //eHeuristic heuristic = convertHeuristic(heuristicType);
 
@@ -75,26 +74,18 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     bool pathDiscovered = false; // set discovered path boolean to false
 
     while (!openSet.empty()) {
-
-        //search for lowest f value...using helper function... instead of using a vector here
-
         cout << "current open set size: " << openSet.size() << endl;
-        //find the index of the node of the current value
+
+        //find the index of the lowest f value node, in the openSet
         int currentIndex = findLowestFValue(openSet);
         Node currentNode = openSet[currentIndex];
-
         cout << "selected a new current node" << currentNode.xCoord << currentNode.yCoord << endl;
-
-        //Node currentNode = openSet.back(); //get node at front of openList
-
         currentNode.expanded = true; // set the current node expanded flag to true
         currentNode.discovered = true; // set the temp node to discovered flag to true
 
-        //openSet.pop_back(); //remove current node from the openSet
         openSet.erase(openSet.begin()+currentIndex);
         cout<< "new open set size" << openSet.size() << endl;
         closedSet.push_back(currentNode); //insert current node into the closedSet
-
 
         //calculate the f,g,h of the current node.
         currentNode.g = currentNode.nodeCost ;
