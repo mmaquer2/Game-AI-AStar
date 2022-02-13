@@ -21,6 +21,8 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 			//if the node is passable set bool to true, and record the weight of the node cost
 			else {
 				tempNode.passable = true;
+                tempNode.discovered= false;
+                tempNode.expanded = false;
 				int tempCost = (int)temp - 48; //due to unicode values have to subtract 48 to get the correct int value
 				tempNode.nodeCost = tempCost;
 

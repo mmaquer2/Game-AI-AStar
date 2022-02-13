@@ -82,12 +82,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/michaelmaquera/school/a-star/include/AStar.h">
-			<Option target="App"/>
-		</Unit>
-		<Unit filename="/Users/michaelmaquera/school/a-star/src/AStar.cpp">
-			<Option target="App"/>
-		</Unit>
 		<Unit filename="/Users/michaelmaquera/school/a-star/src/Graph.cpp">
 			<Option target="App"/>
 		</Unit>
@@ -95,9 +89,6 @@
 			<Option target="App"/>
 		</Unit>
 		<Unit filename="/Users/michaelmaquera/school/a-star/src/main.cpp">
-			<Option target="App"/>
-		</Unit>
-		<Unit filename="/Users/michaelmaquera/school/a-star/src/test.cpp">
 			<Option target="App"/>
 		</Unit>
 		<Unit filename="/Users/michaelmaquera/school/a-star/CMakeLists.txt">

@@ -73,11 +73,17 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         currentNode.discovered = true; // set the temp node to discovered flag to true
         openSet.pop_back(); //remove the top element just received
         closedSet.push_back(currentNode); //insert current node into the closedSet
+
         //calculate the f,g,h of the current node...
         currentNode.g = currentNode.nodeCost ;
         //currentNode.h = manhattan(currentNode.xCoord, currentNode.yCoord, endX, endY);
         currentNode.h = linear(currentNode.xCoord, currentNode.yCoord, endX, endY);
         currentNode.f = currentNode.g + currentNode.h;
+
+        //pass back the node reference to the graph matrix
+        int x = currentNode.xCoord;
+        int y = currentNode.yCoord;
+        nodeGraph.graph[x][y] = currentNode;
 
         //cout<< " current g: "<< currentNode.g << endl;
         //cout<< "current h: "<< currentNode.h << endl;
@@ -92,12 +98,14 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         }
         for (int i = 0; i < currentNode.neighbors.size(); ++i) {
             array<int, 2> tempCoors = currentNode.neighbors[i]; // get the coordinates of the neighbor
-            cout << "current neighbor coordinate: " << tempCoors[0] << " , " <<tempCoors[1] << endl;
+            //cout << "current neighbor coordinate: " << tempCoors[0] << " , " <<tempCoors[1] << endl;
             //check if the neighbor is valid within the graph boundary and is passable
             if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
 
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                 tempNeighbor.discovered = true; //set the neighbor node to discovered
+
+                cout << "discovered status: " << currentNode.discovered << tempNeighbor.discovered << endl;
 
                 if(tempNeighbor.passable){
                     //calculate the f,g,h of the selected neighbor node:
@@ -106,6 +114,9 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                     tempNeighbor.h = linear(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
                     tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
+                   //pass reference back into graph matrix
+                    nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
+
                     //cout<< "temp g: "<< tempNeighbor.g << endl;
                     //cout<< "temp h: "<< tempNeighbor.h << endl;
                     //cout<< "temp f: "  << tempNeighbor.f << endl;
@@ -113,7 +124,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                     // compare the f values of the current node and neighbors:
                     if ((tempNeighbor.f < currentNode.f) ) {
 
-                        cout << "accepting the tentative cost of the new neighbor node " << endl;
+                        //cout << "accepting the tentative cost of the new neighbor node " << endl;
                         openSet.push_back(tempNeighbor);
 
                     }
@@ -159,7 +170,6 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
         if (mode == Expanded) {
 
-            std::cout << " creating expanded view";
 
         }
 
@@ -170,10 +180,17 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
             for(int i = 0; i < nodeGraph.graph.size(); i++){
 
                 for(int j = 0; j < nodeGraph.graph[i].size();j++){
-
                     Node temp = nodeGraph.graph[i][j];
 
-                    cout << "discovered status " << temp.discovered << endl;
+                    //set discovered nodes
+                    if(temp.discovered){
+                        outputMap[i][j] = 't';
+                    }
+
+                    //set end nodes
+                    if(temp.expanded){
+                        outputMap[i][j] = 'e';
+                    }
 
                     //set start node
                     if((i == startX) && (j == startY)){
@@ -185,23 +202,11 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                         outputMap[i][j] = 'd';
                     }
 
-                    //set discovered nodes
-                    if(temp.discovered){
-                        cout <<"updated a discovred node" << endl;
-                        outputMap[i][j] = 't';
-                    }
-
-                    //set end nodes
-                    if(temp.expanded){
-                        outputMap[i][j] = 'e';
-                    }
-
-
+                    //set path nodes
                 }
 
             }
-
-
+            
         }
 
         std::cout << endl;
@@ -210,6 +215,22 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         PrintMap(outputMap);
 
     }
+
+    /*
+    //check the status of each node after the search:
+    for(int i = 0; i < nodeGraph.graph.size(); i++) {
+
+        for (int j = 0; j < nodeGraph.graph[i].size(); j++) {
+
+            Node temp = nodeGraph.graph[i][j];
+
+            cout<< "node"<< i <<"," << j <<" :"<< temp.h << temp.g << temp.f << temp.passable << temp.discovered << endl;
+
+        }
+    }
+    */
+
+
 
 }
 

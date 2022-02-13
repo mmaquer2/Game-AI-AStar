@@ -129,30 +129,6 @@ App/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/build
 .PHONY : App/fast
 
-src/AStar.o: src/AStar.cpp.o
-.PHONY : src/AStar.o
-
-# target to build an object file
-src/AStar.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/AStar.cpp.o
-.PHONY : src/AStar.cpp.o
-
-src/AStar.i: src/AStar.cpp.i
-.PHONY : src/AStar.i
-
-# target to preprocess a source file
-src/AStar.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/AStar.cpp.i
-.PHONY : src/AStar.cpp.i
-
-src/AStar.s: src/AStar.cpp.s
-.PHONY : src/AStar.s
-
-# target to generate assembly for a file
-src/AStar.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/AStar.cpp.s
-.PHONY : src/AStar.cpp.s
-
 src/Graph.o: src/Graph.cpp.o
 .PHONY : src/Graph.o
 
@@ -225,30 +201,6 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/test.o: src/test.cpp.o
-.PHONY : src/test.o
-
-# target to build an object file
-src/test.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/test.cpp.o
-.PHONY : src/test.cpp.o
-
-src/test.i: src/test.cpp.i
-.PHONY : src/test.i
-
-# target to preprocess a source file
-src/test.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/test.cpp.i
-.PHONY : src/test.cpp.i
-
-src/test.s: src/test.cpp.s
-.PHONY : src/test.s
-
-# target to generate assembly for a file
-src/test.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/test.cpp.s
-.PHONY : src/test.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -258,9 +210,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... App"
-	@echo "... src/AStar.o"
-	@echo "... src/AStar.i"
-	@echo "... src/AStar.s"
 	@echo "... src/Graph.o"
 	@echo "... src/Graph.i"
 	@echo "... src/Graph.s"
@@ -270,9 +219,6 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/test.o"
-	@echo "... src/test.i"
-	@echo "... src/test.s"
 .PHONY : help
 
 

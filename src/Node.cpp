@@ -34,7 +34,6 @@ Node::Node(int x, int y) {
 	//helper function to obtain the neighbor x,y of the node object
 	int Node::calculateNeighbors() {
 
-	
 		//cardinal direction neighbors:
 		std::array<int,2> right;
 		std::array<int, 2> left;
@@ -67,7 +66,6 @@ Node::Node(int x, int y) {
 
 
 	vector<std::array<int, 2>> Node::getNeighbors() {
-
 		return neighbors;
 	}
 
@@ -80,26 +78,21 @@ Node::Node(int x, int y) {
 	}
 
 	int Node::getG() {
-
 		return g;
 	}
 
 
 	int Node::setH(int newH){
 		h = newH;
-
 		return h;
 	};
 
 	int Node::setG(int newG){
-		
 		g = newG;
-
 		return g;
 	};
 
 	int Node::setF(int newF){
-	
 		f = newF;
 		return f;
 	};
