@@ -114,7 +114,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
                     // compare the f values of the current node and neighbors:
                     if ((tempNeighbor.f < currentNode.f) ) {
-                        openSet.push_back(tempNeighbor);
+                        openSet.push_back(tempNeighbor); // if the neighbor node has a lower f value add it to the open set
                     }
                 }
             }
@@ -144,14 +144,30 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         // Annotate & print the output map
         vector<vector<char>> outputMap = inputMap;
 
+        //just display the play
+        if (mode == Standard) {
+
+            for(auto temp : closedSet){
+                outputMap[temp.xCoord][temp.yCoord] = '+';
+            }
+
+            outputMap[startX][startY] = 's';
+            outputMap[endX][endY] = 'd';
+        }
+
+        //display path and expnaded nodes
         if (mode == Expanded) {
 
             for(auto temp : closedSet){
                 outputMap[temp.xCoord][temp.yCoord] = '+';
             }
 
+            outputMap[startX][startY] = 's';
+            outputMap[endX][endY] = 'd';
+
         }
 
+        //display path, expanded nodes, and touched nodes
         if (mode == All) {
 
             //write the final path to the output map
@@ -185,37 +201,15 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                         outputMap[i][j] = 'd';
                     }
 
-
                 }
-
             }
-
-
-
         }
 
         std::cout << endl;
         std::cout << "the output map is:";
         std::cout << endl;
         PrintMap(outputMap);
-
     }
-
-    /*
-    //check the status of each node after the search:
-    for(int i = 0; i < nodeGraph.graph.size(); i++) {
-
-        for (int j = 0; j < nodeGraph.graph[i].size(); j++) {
-
-            Node temp = nodeGraph.graph[i][j];
-
-            cout << "node"<< i <<"," << j <<" :"<< temp.h << temp.g << temp.f << temp.passable << temp.discovered << endl;
-
-        }
-    }
-    */
-
-
 
 }
 
@@ -238,7 +232,7 @@ int Test() {
     cout << "the input map is:\n";
     PrintMap(inputMap);
 
-    modeType = "All";
+    modeType = "Standard";
     eMode mode = convertMode(modeType);
 
     heuristicType = "Manhattan";
@@ -246,13 +240,13 @@ int Test() {
 
 
     // Start Coordinates:
-    start[0] = 1;
+    start[0] = 0;
     start[1] = 1;
     cout << endl;
 
     //End Coordinates:
-    end[0] = 1;
-    end[1] = 3;
+    end[0] = 3;
+    end[1] = 4;
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 
@@ -261,10 +255,7 @@ int Test() {
 
 
 // Program Entry:
-int main()
-{
-
+int main(){
     Test();  //Running the program with testing (no user input)
-
     return 0;
 }

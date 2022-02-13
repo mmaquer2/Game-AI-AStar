@@ -1,16 +1,15 @@
 # CS5150 Project One: A-Star
 
 - Demo for the A - Star algorithm in C++ for CS 5150 Game AI at Northeastern University
-- Notes: 
-  - calculate cost of the new node
-  - g = the movement cost to move from the starting point to a given square on the grid, following the path generated to get there.
-  - h = the estimated movement cost to move from that given square on the grid to the final destination.This is often referred to as the heuristic,
-  - f = sum of g and h
-## Set up 
+
+## Self Reflection:
+  - was able to complete the assignment, the straight line heuristic was challenging
+  - the cost of the nodes didnt add up correctly given some of the approaches I found online and on blogs
+## Set up:
 	- Download program file
 
 
-## Run and Test Instructions
+## Run and Test Instructions:
     - Commands using CmakeLists.txt, navigate to the main project folder
          - cmake .
          - make
@@ -21,6 +20,12 @@
     - windows: use visual studio debugger to run main.cpp
     - enter the entire path of the input file
 
+
+- Notes:
+  - calculate cost of the new node
+  - g = the movement cost to move from the starting point to a given square on the grid, following the path generated to get there.
+  - h = the estimated movement cost to move from that given square on the grid to the final destination.This is often referred to as the heuristic,
+  - f = sum of g and h
 
 ## Resources: 
 
