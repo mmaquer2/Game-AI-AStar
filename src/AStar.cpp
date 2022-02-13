@@ -80,14 +80,19 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
         cout << "current open set size: " << openSet.size() << endl;
 
-        //Node currentNode = findLowestFValue(openSet);
+        Node currentNode = findLowestFValue(openSet);
 
-        Node currentNode = openSet.back(); //get node at front of openList
+        cout << "selected a new current node" << currentNode.xCoord << currentNode.yCoord << endl;
+
+
+        //Node currentNode = openSet.back(); //get node at front of openList
 
         currentNode.expanded = true; // set the current node expanded flag to true
         currentNode.discovered = true; // set the temp node to discovered flag to true
 
-        openSet.pop_back(); //remove the top element just received
+        //openSet.pop_back(); //remove current node from the openSet
+        openSet.erase(openSet.begin()+1);
+
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
 
