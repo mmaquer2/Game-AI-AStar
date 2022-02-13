@@ -25,15 +25,14 @@ AStar::AStar() {
     //heuristicType = "Manhattan";
     //eHeuristic heuristic = convertHeuristic(heuristicType);
 
-
     // Start Coordinates:
     start[0] = 0;
-    start[1] = 1;
+    start[1] = 0;
     cout << endl;
 
     //End Coordinates:
     end[0] = 3;
-    end[1] = 4;
+    end[1] = 1;
 
     findPath(inputMap, start, end, "Standard", "linear", nodeGraph);
 
@@ -48,12 +47,20 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
     vector<Node> openSet; //container for tracking currently extended nodes
     vector<Node> closedSet; //container for tracking exhausted nodes
+    vector<Node> unPassable; //container for holding discovered unpassable noes
 
     int startX, startY, endX, endY;
     startX = start[0];
     startY = start[1];
     endX = destination[0];
     endY = destination[1];
+
+    //check if start and end node are in bounds
+    if(!inBounds(startX, startY, nodeGraph.height, nodeGraph.width) ||
+       (!inBounds(endX, endY, nodeGraph.height, nodeGraph.width))){
+        cout <<" ERROR: selected an out of bounds node as the start or end node" << endl;
+        return;
+    }
 
     Node startNode = nodeGraph.graph[startX][startY];  //get the starting node from the graph
     Node endNode = nodeGraph.graph[endX][endY];  //get the end node from the graph
@@ -109,7 +116,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                 tempNeighbor.discovered = true; //set the neighbor node to discovered
                 //cout << "discovered status: " << currentNode.discovered << tempNeighbor.discovered << endl;
-                if(tempNeighbor.passable){
+
+                if(!tempNeighbor.passable){
+                    unPassable.push_back(tempNeighbor);
+
+                } else{
+
                     //calculate the f,g,h of the selected neighbor node:
                     tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
 
@@ -230,10 +242,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 bool AStar::inBounds(int x, int y, int height,int width) {
     if( (x >= 0) &&
         (y >= 0) &&
-        (x<= height) &&
-        (y <= height) &&
-        (x <=width) &&
-        (y <= width))
+        (x <= height ) &&
+        (y <= height ) &&
+        (x <= width ) &&
+        (y <= width ))
+
     {return true;}
     else {return false;}
 }

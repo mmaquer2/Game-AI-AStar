@@ -3,8 +3,9 @@
 - Demo for the A - Star algorithm in C++ for CS 5150 Game AI at Northeastern University
 
 ## Self Reflection:
-  - was able to complete the assignment, the straight line heuristic was challenging
-  - the cost of the nodes didnt add up correctly given some of the approaches I found online and on blogs
+  - was able to complete the assignment the challenging portions were understanding the correct way to calculate the 
+     f,g,h values for each grid node
+  - also thinking of how the algorthim could back track, after running into an obstacle took some tinkering to figure out
 ## Set up:
 	- Download program file
 

@@ -29,7 +29,7 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 			}
 
 			//std::cout << temp << std::endl;
-			//std::cout << "new node added from  " << i << " , " << j << " cost: " << tempNode.nodeCost << " passable: " << tempNode.passable << endl;
+			std::cout << "new node added from  " << i << " , " << j << " cost: " << tempNode.nodeCost << " passable: " << tempNode.passable << endl;
 			
 			//add node to the graph vector
 			
@@ -42,9 +42,10 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 
     //set the height and width of the graph to check boundries
     //height = 4;
-    //width = 5;
-    height = graph.size() - 1;
-    width = graph[0].size();
+    //width = 4;
+
+    height = graph.size() -1 ;
+    width = graph[0].size()-1;
 
     cout << "graph height: " << height << endl;
     cout << "graph width: " << width << endl;
@@ -53,47 +54,6 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 
 
 }
-
-//calculate the starting g,f,h values for all nodes with respect to the start and end node
-void Graph::calculateHValues(string hType, int end[2]) {
-
-    cout << "calculating H Values" << endl;
-        //have each node calculate its own neighbors in the graph
-        for (int i = 0; i < graph.size(); i++) {
-            for (int j = 0; j < graph[i].size(); j++) {
-
-                Node temp = graph[i][j];
-
-                int result = HeuristicCalc(hType, temp, end);
-                temp.h = result;
-                temp = graph[i][j];
-
-                cout << temp.h << " h value is" << endl;
-
-            }
-        }
-}
-
-int Graph::HeuristicCalc(string hType, Node temp, int end[2]) {
-
-    int hValue = 22;
-
-    if(hType == "Manhattan"){
-
-        hValue = 301;
-
-
-
-    } else{
-
-
-    }
-
-
-    return hValue;
-
-}
-
 
 
 void Graph::findNodeNeighbors() {
