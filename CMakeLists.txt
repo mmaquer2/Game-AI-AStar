@@ -34,7 +34,7 @@ endif()
 set (SRC_LIST
         ./src/Node.cpp
         ./src/Graph.cpp
-        ./src/test.cpp
+        ./src/main.cpp
         )
 
 # create exccutable for main App

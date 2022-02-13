@@ -14,10 +14,10 @@ using namespace std;
 Node::Node(int x, int y) {
 		xCoord = x;
 		yCoord = y;
-		passable = false;
-		expanded = false;
-		discovered = false;
-		closed = false;
+		//passable = false;
+		//expanded = false;
+		//discovered = false;
+		//closed = false;
 	
 };
 

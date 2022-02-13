@@ -18,8 +18,8 @@ public:
 	int xCoord = 0;
 	int yCoord = 0;
 	bool passable;
-	bool discovered;
-	bool expanded;
+	bool discovered = false;
+	bool expanded = false;
 	bool closed;
 
 	int g = 0;

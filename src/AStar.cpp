@@ -36,8 +36,10 @@ int AStar::manhattanDistance(int x, int y, int endX, int endY) {
 
 int AStar::linearDistance(int x, int y, int endX, int endY) {
 
-
-    return 0;
+    int dx = fabs( x - endX);
+    int dy = fabs(y - endY);
+    int avgDiff = 2;
+    return avgDiff * (dx * dx + dy * dy);
 }
 
 int AStar::getHeight() {

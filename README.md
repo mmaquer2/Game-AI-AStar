@@ -26,4 +26,4 @@
 
 - https://www.redblobgames.com/pathfinding/a-star/
 - https://web.archive.org/web/20171022224528/http://www.policyalmanac.org:80/games/aStarTutorial.htm
-
+- https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html

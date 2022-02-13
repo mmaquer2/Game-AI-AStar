@@ -3,28 +3,12 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
-#include "../include/Project1.h"
-#include "../include/Node.h"
-#include "../include/Graph.h"
+#include "Project1.h"
+#include "Node.h"
+#include "Graph.h"
 #include <math.h>
 
 using namespace std;
-
-// helper function to check if a neighbor already exists in the openSet
-bool neighborInOpenSet(Graph input, Node node){
-    bool status = false;
-    //check if the node is not in the openSet
-    // for (int i = 0; i < openSet.size(); i++) {
-    // Node temp = openSet[i];
-    // if (temp == tempNeighbor) {
-    //   status = true;
-    //}
-
-    //}
-
-    return status;
-
-}
 
 
 //Helper function to check if node is in bounds
@@ -43,27 +27,28 @@ int manhattan(int x, int y, int endX, int endY){
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
     int avgDiff = 2; // the avg difference of all nodes
-
     return avgDiff * (dx + dy);
-
 
 }
 
+int linear(int x, int y, int endX, int endY){
+    int dx = fabs( x - endX);
+    int dy = fabs(y - endY);
+    int avgDiff = 2;
+    return avgDiff * (dx * dx + dy * dy);
 
+}
 
 // /Users/michaelmaquera/school/a-star/data/project1.txt
-void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph )
-{
+void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph ){
     // Start the timer
     using namespace chrono;
     steady_clock::time_point clock_begin = steady_clock::now();
 
     vector<Node> cameFrom; //container for track when the current best path
     vector<int> totalCost;
-
     vector<Node> openSet; //container for tracking currently exmained code
     vector<Node> closedSet; //container for tracking exhausted nodes
-
 
     int startX, startY, endX, endY;
     startX = start[0];
@@ -79,31 +64,28 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         cout <<" ERROR: selected a unpassable node as the start or end node" << endl;
         return;
     }
-    
+
    openSet.push_back(startNode); //insert start node to open container
    bool pathDiscovered = false; // set discovered path boolean to false
 
     while (!openSet.empty()) {
-
-
        Node currentNode = openSet.back(); //get node at front of openList
        currentNode.expanded = true; // set the current node expanded flag to true
        currentNode.discovered = true; // set the temp node to discovered flag to true
        openSet.pop_back(); //remove the top element just received
        closedSet.push_back(currentNode); //insert current node into the closedSet
-
        //calculate the f,g,h of the current node...
         currentNode.g = currentNode.nodeCost ;
-        currentNode.h = manhattan(currentNode.xCoord, currentNode.yCoord, endX, endY);
+        //currentNode.h = manhattan(currentNode.xCoord, currentNode.yCoord, endX, endY);
+        currentNode.h = linear(currentNode.xCoord, currentNode.yCoord, endX, endY);
         currentNode.f = currentNode.g + currentNode.h;
 
-        cout<< " current g: "<< currentNode.g << endl;
-        cout<< "current h: "<< currentNode.h << endl;
-        cout<< "current f: "  << currentNode.f << endl;
+        //cout<< " current g: "<< currentNode.g << endl;
+        //cout<< "current h: "<< currentNode.h << endl;
+        //cout<< "current f: "  << currentNode.f << endl;
 
-
-       cout << "current node cost: " << currentNode.nodeCost << endl; //uncomment to see what neighbors are being tested
-       //check if destination has been reached  
+       //cout << "current node cost: " << currentNode.nodeCost << endl; //uncomment to see what neighbors are being tested
+       //check if destination has been reached
        if (currentNode.getLocation() == endNode.getLocation() ) {
            std::cout << "end node found!" << endl;
            pathDiscovered = true; //the closed set now contains the final path from start to finish
@@ -118,15 +100,16 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                tempNeighbor.discovered = true; //set the neighbor node to discovered
 
-               if(tempNeighbor.passable == true){
+               if(tempNeighbor.passable){
                    //calculate the f,g,h of the selected neighbor node:
                    tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
-                   tempNeighbor.h = manhattan(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
+                   //tempNeighbor.h = manhattan(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
+                   tempNeighbor.h = linear(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
                    tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
-                   cout<< "temp g: "<< tempNeighbor.g << endl;
-                   cout<< "temp h: "<< tempNeighbor.h << endl;
-                   cout<< "temp f: "  << tempNeighbor.f << endl;
+                   //cout<< "temp g: "<< tempNeighbor.g << endl;
+                   //cout<< "temp h: "<< tempNeighbor.h << endl;
+                   //cout<< "temp f: "  << tempNeighbor.f << endl;
 
                    // compare the f values of the current node and neighbors:
                    if ((tempNeighbor.f < currentNode.f) ) {
@@ -137,8 +120,6 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                    }
 
                }
-
-
 
            }
 
@@ -161,29 +142,20 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
     }
     else {
 
-
-        cout <<"printing path..." << endl;
-        for(int i = 0; i <closedSet.size();i++){
-
-            Node temp = closedSet[i];
+        for(auto temp : closedSet){
+            //set part of final path to true here....
             std::cout << temp.xCoord << "," << temp.yCoord << endl;
-
         }
-        cout <<"path complete..." << endl;
 
         // Annotate & print the output map
-        //vector<vector<char>> outputMap = inputMap;
+        vector<vector<char>> outputMap = inputMap;
 
         //create a new output file
-        string outputPath = "outputPath.txt";
         //s = start node
         //d = destination node
         //+ = path node
         //t = touched/discovered noe
-        //e = expnaded nodes
-
-        //iterate through the examined/modified inputMap and
-
+        //e = expanded nodes
         //TODO Annotate the map based on the mode selected
 
         if (mode == Expanded) {
@@ -194,7 +166,41 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
         if (mode == All) {
 
-            std::cout << " creating all view" << endl;
+
+            //iterate through the examined/modified inputMap and
+            for(int i = 0; i < nodeGraph.graph.size(); i++){
+
+                for(int j = 0; j < nodeGraph.graph[i].size();j++){
+
+                    Node temp = nodeGraph.graph[i][j];
+
+                    cout << "discovered status " << temp.discovered << endl;
+
+                    //set start node
+                    if((i == startX) && (j == startY)){
+                        outputMap[i][j] = 's';
+
+                    }
+                    //set end node
+                    if((i == endX) && (j == endY)){
+                        outputMap[i][j] = 'd';
+                    }
+
+                    //set discovered nodes
+                    if(temp.discovered){
+                        cout <<"updated a discovred node" << endl;
+                        outputMap[i][j] = 't';
+                    }
+
+                    //set end nodes
+                    if(temp.expanded){
+                        outputMap[i][j] = 'e';
+                    }
+
+
+                }
+
+            }
 
 
         }
@@ -202,7 +208,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         std::cout << endl;
         std::cout << "the output map is:";
         std::cout << endl;
-        PrintMap(inputMap);
+        PrintMap(outputMap);
 
     }
 
@@ -256,7 +262,6 @@ int Test() {
 }
 
 
-// C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
 void testNode() {
 
     //read input map function...
@@ -288,7 +293,7 @@ void testNode() {
 
 }
 
-// C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
+
 void testGraph() {
     vector<vector<char>> inputMap;
     string loc;
@@ -309,16 +314,4 @@ void testGraph() {
 }
 
 
-//  C:\Users\mikem\source\repos\gameAI_project_one\Project1\data\project1.txt
-// Program Entry: 
-int main()
-{
-  
-    Test();  //Running the program with testing (no user input)
 
-    //testNode();
-
-    //testGraph();
-
-    return 0;
-}
