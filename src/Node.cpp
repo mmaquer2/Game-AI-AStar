@@ -8,12 +8,10 @@ using namespace std;
 Node::Node(int x, int y) {
 		xCoord = x;
 		yCoord = y;
-
 };
 
 	//getter function to return the x,y values of the node
 	array<int ,2> Node::getLocation() {
-
 		std::array<int ,2> cords;
 		cords[0] = xCoord;
 		cords[1] = yCoord;

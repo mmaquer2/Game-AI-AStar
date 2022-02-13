@@ -144,13 +144,6 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         // Annotate & print the output map
         vector<vector<char>> outputMap = inputMap;
 
-        //create a new output file
-        //s = start node
-        //d = destination node
-        //+ = path node
-        //t = touched/discovered noe
-        //e = expanded nodes
-
         if (mode == Expanded) {
 
             for(auto temp : closedSet){
@@ -177,7 +170,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                         outputMap[i][j] = 't';
                     }
 
-                    //set end nodes
+                    //set expanded nodes
                     if(temp.expanded){
                         outputMap[i][j] = 'e';
                     }
@@ -253,13 +246,13 @@ int Test() {
 
 
     // Start Coordinates:
-    start[0] = 0;
-    start[1] = 0;
+    start[0] = 1;
+    start[1] = 1;
     cout << endl;
 
     //End Coordinates:
-    end[0] = 3;
-    end[1] = 4;
+    end[0] = 1;
+    end[1] = 3;
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 
