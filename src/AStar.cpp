@@ -88,7 +88,9 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
         //calculate the f,g,h of the current node.
-        currentNode.g = currentNode.nodeCost ;
+        //currentNode.g = currentNode.nodeCost ;
+        currentNode.g = gValueDistance(currentNode.xCoord, currentNode.yCoord,startX,startY, currentNode.nodeCost);
+
         if(heuristic == "manhattan"){
             currentNode.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY);
         } else {
@@ -133,7 +135,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         unPassable.push_back(tempNeighbor);
                     } else{
                         //calculate the f,g,h of the selected neighbor node:
-                        tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
+                        //tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
+                        tempNeighbor.g = gValueDistance(tempNeighbor.xCoord, tempNeighbor.yCoord,startX,startY, tempNeighbor.nodeCost);
 
                         if(heuristic == "manhattan"){
                             tempNeighbor.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY);
@@ -156,7 +159,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         //loop to select the lowest cost of all neighbors...?
 
                         // compare the f values of the current node and neighbors:
-                        if ((tempNeighbor.f < currentNode.f) ) {
+                        if ((tempNeighbor.f <= currentNode.f) ) {
                             cout << "--neighbor added to open set--" << endl;
                             openSet.push_back(tempNeighbor); // if the neighbor node has a lower f value add it to the open set
                         }
@@ -331,6 +334,16 @@ bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
     }
 
     return foundStatus;
+}
+
+int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
+
+
+    int dx = fabs( x - startX);
+    int dy = fabs(y - startY);
+    int gValue = (dx * dx + dy * dy) + weight;
+    return gValue;
+    
 }
 
 

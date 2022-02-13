@@ -29,6 +29,7 @@ public:
     bool inBounds(int x, int y, int height,int width);
     int manhattanDistance(int x, int y, int endX, int endY);
     int linearDistance(int x, int y, int endX, int endY);
+    int gValueDistance(int x, int y, int startX, int startY, int weight);
 
     bool searchClosedList(Node input, vector<Node> closedSet);
 
