@@ -35,6 +35,10 @@ public:
 
     int getHeight();
     int getWidth();
+
+    bool searchOpenList(Node input, vector<Node> closedSet);
+
+    Node calculateBestFOfNeighbors();
 };
 
 

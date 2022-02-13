@@ -30,11 +30,10 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 2;
-    end[1] = 1;
+    end[0] = 5;
+    end[1] = 6;
 
     findPath(inputMap, start, end, "Standard", "linear", nodeGraph);
-
 
 }
 
@@ -73,6 +72,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     openSet.push_back(startNode); //insert start node to open container
     bool pathDiscovered = false; // set discovered path boolean to false
 
+    //start path search
     while (!openSet.empty()) {
         cout << "current open set size: " << openSet.size() << endl;
 
@@ -83,7 +83,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         currentNode.expanded = true; // set the current node expanded flag to true
         currentNode.discovered = true; // set the temp node to discovered flag to true
 
-        openSet.erase(openSet.begin()+currentIndex);
+        openSet.erase(openSet.begin()+currentIndex); //remove the current node from the openSet
         cout<< "new open set size" << openSet.size() << endl;
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
@@ -159,9 +159,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         //loop to select the lowest cost of all neighbors...?
 
                         // compare the f values of the current node and neighbors:
+
                         if ((tempNeighbor.f <= currentNode.f) ) {
                             cout << "--neighbor added to open set--" << endl;
-                            openSet.push_back(tempNeighbor); // if the neighbor node has a lower f value add it to the open set
+                            openSet.push_back(tempNeighbor);
+                             // if the neighbor node has a lower f value add it to the open set
                         }
                     }
                 }
@@ -273,7 +275,7 @@ bool AStar::inBounds(int x, int y, int height,int width) {
 int AStar::manhattanDistance(int x, int y, int endX, int endY) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
-    int avgDiff = 2; // the avg difference of all nodes
+    int avgDiff = 10; // the avg difference of all nodes
 
     return avgDiff * (dx + dy);
 
@@ -284,7 +286,7 @@ int AStar::linearDistance(int x, int y, int endX, int endY) {
 
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
-    int avgDiff = 2;
+    int avgDiff = 10;
     return avgDiff * (dx * dx + dy * dy);
 }
 
@@ -321,6 +323,23 @@ int AStar::findLowestFValue(vector<Node> input) {
 }
 
 //function to search the closed list for present nodes
+bool AStar::searchOpenList(Node input,vector<Node> openSet ) {
+
+    bool foundStatus = false;
+    for(auto temp : openSet){
+        int tempX = temp.xCoord;
+        int tempY = temp.yCoord;
+        if((tempX == input.xCoord) && (tempY == input.yCoord) ){
+            foundStatus = true;
+            return foundStatus;
+        }
+    }
+
+    return foundStatus;
+}
+
+
+//function to search the closed list for present nodes
 bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
 
     bool foundStatus = false;
@@ -341,9 +360,12 @@ int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
 
     int dx = fabs( x - startX);
     int dy = fabs(y - startY);
-    int gValue = (dx * dx + dy * dy) + weight;
+    int gValue = (dx + dy);
     return gValue;
-    
+
 }
+
+
+
 
 
