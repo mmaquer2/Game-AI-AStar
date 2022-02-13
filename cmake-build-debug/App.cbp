@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/michaelmaquera/school/a-star/src/AStar.cpp">
+			<Option target="App"/>
+		</Unit>
 		<Unit filename="/Users/michaelmaquera/school/a-star/src/Graph.cpp">
 			<Option target="App"/>
 		</Unit>

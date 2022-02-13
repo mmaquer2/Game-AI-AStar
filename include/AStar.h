@@ -1,6 +1,7 @@
+
+
 #ifndef PATH_FINDING_ASTAR_H
 #define PATH_FINDING_ASTAR_H
-
 #include <chrono>
 #include <unordered_map>
 #include <queue>
@@ -18,7 +19,10 @@ public:
     int graphHeight;
     int graphWidth;
 
-    void findPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph);
+    AStar();
+
+    void findPath(const vector<vector<char>> &inputMap, int *start, int *destination, string mode, string heuristic,
+                  Graph nodeGraph);
 
     bool inBounds(int x, int y, int height,int width);
     int manhattanDistance(int x, int y, int endX, int endY);

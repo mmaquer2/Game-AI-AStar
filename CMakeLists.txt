@@ -34,6 +34,7 @@ endif()
 set (SRC_LIST
         ./src/Node.cpp
         ./src/Graph.cpp
+        ./src/AStar.cpp
         ./src/main.cpp
         )
 

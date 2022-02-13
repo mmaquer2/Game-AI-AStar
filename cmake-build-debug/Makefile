@@ -129,6 +129,30 @@ App/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/build
 .PHONY : App/fast
 
+src/AStar.o: src/AStar.cpp.o
+.PHONY : src/AStar.o
+
+# target to build an object file
+src/AStar.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/AStar.cpp.o
+.PHONY : src/AStar.cpp.o
+
+src/AStar.i: src/AStar.cpp.i
+.PHONY : src/AStar.i
+
+# target to preprocess a source file
+src/AStar.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/AStar.cpp.i
+.PHONY : src/AStar.cpp.i
+
+src/AStar.s: src/AStar.cpp.s
+.PHONY : src/AStar.s
+
+# target to generate assembly for a file
+src/AStar.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/AStar.cpp.s
+.PHONY : src/AStar.cpp.s
+
 src/Graph.o: src/Graph.cpp.o
 .PHONY : src/Graph.o
 
@@ -210,6 +234,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... App"
+	@echo "... src/AStar.o"
+	@echo "... src/AStar.i"
+	@echo "... src/AStar.s"
 	@echo "... src/Graph.o"
 	@echo "... src/Graph.i"
 	@echo "... src/Graph.s"

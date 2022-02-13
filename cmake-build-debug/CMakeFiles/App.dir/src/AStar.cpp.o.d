@@ -1,5 +1,5 @@
-CMakeFiles/App.dir/src/main.cpp.o: \
-  /Users/michaelmaquera/school/a-star/src/main.cpp \
+CMakeFiles/App.dir/src/AStar.cpp.o: \
+  /Users/michaelmaquera/school/a-star/src/AStar.cpp \
   /Users/michaelmaquera/school/a-star/src/../include/AStar.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/chrono \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__config \

@@ -48,34 +48,5 @@ void static PrintMap(std::vector<std::vector<char>> PathMap) {
 enum eMode { Standard, Expanded, All };
 enum eHeuristic { StraightLine, Manhattan };
 
-eMode convertMode(const std::string str)
-{
-    if (str == "Standard")
-    {
-        return Standard;
-    }
-    else if (str == "Expanded") {
-        return Expanded;
-    }
-
-    else if (str == "All") {
-        return All;
-    }
-    else throw("illegal value of mode");
-}
-
-eHeuristic convertHeuristic(const std::string str)
-{
-    if (str == "StraightLine")
-    {
-        return StraightLine;
-    }
-    else if (str == "Manhattan")
-    {
-        return Manhattan;
-    }
-
-    else throw("Illegal value of heuristic");
-}
 
 #endif
