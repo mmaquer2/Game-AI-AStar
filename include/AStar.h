@@ -24,7 +24,7 @@ public:
     void findPath(const vector<vector<char>> &inputMap, int *start, int *destination, string mode, string heuristic,
                   Graph nodeGraph);
 
-    Node findLowestFValue(vector<Node> input);
+    int findLowestFValue(vector<Node> input);
 
     bool inBounds(int x, int y, int height,int width);
     int manhattanDistance(int x, int y, int endX, int endY);

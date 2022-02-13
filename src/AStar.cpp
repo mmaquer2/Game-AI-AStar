@@ -79,11 +79,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         //search for lowest f value...using helper function... instead of using a vector here
 
         cout << "current open set size: " << openSet.size() << endl;
-
-        Node currentNode = findLowestFValue(openSet);
+        //find the index of the node of the current value
+        int currentIndex = findLowestFValue(openSet);
+        Node currentNode = openSet[currentIndex];
 
         cout << "selected a new current node" << currentNode.xCoord << currentNode.yCoord << endl;
-
 
         //Node currentNode = openSet.back(); //get node at front of openList
 
@@ -91,8 +91,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         currentNode.discovered = true; // set the temp node to discovered flag to true
 
         //openSet.pop_back(); //remove current node from the openSet
-        openSet.erase(openSet.begin()+1);
-
+        openSet.erase(openSet.begin()+currentIndex);
+        cout<< "new open set size" << openSet.size() << endl;
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
 
@@ -295,39 +295,35 @@ int AStar::linearDistance(int x, int y, int endX, int endY) {
 }
 
 int AStar::getHeight() {
-
     return graphHeight;
 }
 
 int AStar::getWidth() {
-
     return graphWidth;
 }
 
 // helper function to find the current node with the lowest f value in the open set
-Node AStar::findLowestFValue(vector<Node> input) {
+int AStar::findLowestFValue(vector<Node> input) {
 
     int min = input[0].f;
     Node lowestF(0,0);
-    int eraseIndex = 0;
+    int lowestIndex = 0;
 
     //if the openSet vector only has the size of one
     if(input.size() == 1){
-        eraseIndex = 0;
-        return input[0];
+        lowestIndex = 0;
+        return 0;
 
     }
     //search for the lowest f value in the open set vector
     for(int i = 0; i < input.size(); i++){
         if(input[i].f < min){
             lowestF = input[i];
-            eraseIndex = i;
+            lowestIndex = i;
         }
     }
 
-    //remove this node from the open set
-
-    return lowestF;
+    return lowestIndex;
 }
 
 //function to search the closed list for present nodes
