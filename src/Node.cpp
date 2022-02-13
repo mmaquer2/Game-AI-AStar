@@ -1,24 +1,14 @@
-#include<iostream>
-#include<vector>
+
 #include "../include/Node.h"
-#include <string>
-#include <iterator>
-#include <iostream>
-#include <algorithm>
 #include <array>
 
 using namespace std;
 
-
-	//class constructor
+//class constructor
 Node::Node(int x, int y) {
 		xCoord = x;
 		yCoord = y;
-		//passable = false;
-		//expanded = false;
-		//discovered = false;
-		//closed = false;
-	
+
 };
 
 	//getter function to return the x,y values of the node
@@ -63,11 +53,6 @@ Node::Node(int x, int y) {
 		return 0;
 	}
 
-
-
-	vector<std::array<int, 2>> Node::getNeighbors() {
-		return neighbors;
-	}
 
 	int Node::getF() {
 		return f;

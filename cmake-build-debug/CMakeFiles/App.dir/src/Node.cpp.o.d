@@ -1,5 +1,6 @@
 CMakeFiles/App.dir/src/Node.cpp.o: \
   /Users/michaelmaquera/school/a-star/src/Node.cpp \
+  /Users/michaelmaquera/school/a-star/src/../include/Node.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/pthread.h \
@@ -225,5 +226,4 @@ CMakeFiles/App.dir/src/Node.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__bit_reference \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__split_buffer \
-  /Users/michaelmaquera/school/a-star/src/../include/Node.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/array

@@ -1,4 +1,3 @@
-
 #include <chrono>
 #include <vector>
 #include <algorithm>
@@ -8,7 +7,6 @@
 #include <math.h>
 
 using namespace std;
-
 
 //Helper function to check if node is in bounds
 bool inBounds(int x, int y, int height,int width){
@@ -27,7 +25,6 @@ int manhattan(int x, int y, int endX, int endY){
     int dy = fabs(y - endY);
     int avgDiff = 2; // the avg difference of all nodes
     return avgDiff * (dx + dy);
-
 }
 
 int linear(int x, int y, int endX, int endY){
@@ -35,18 +32,14 @@ int linear(int x, int y, int endX, int endY){
     int dy = fabs(y - endY);
     int avgDiff = 2;
     return avgDiff * (dx * dx + dy * dy);
-
 }
 
 // /Users/michaelmaquera/school/a-star/data/project1.txt
 void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destination[2], eMode mode, eHeuristic heuristic , Graph nodeGraph ){
-    // Start the timer
     using namespace chrono;
-    steady_clock::time_point clock_begin = steady_clock::now();
+    steady_clock::time_point clock_begin = steady_clock::now(); // Start the timer
 
-    vector<Node> cameFrom; //container for track when the current best path
-    vector<int> totalCost;
-    vector<Node> openSet; //container for tracking currently exmained code
+    vector<Node> openSet; //container for tracking currently extended nodes
     vector<Node> closedSet; //container for tracking exhausted nodes
 
     int startX, startY, endX, endY;
@@ -74,7 +67,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         openSet.pop_back(); //remove the top element just received
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
-        //calculate the f,g,h of the current node...
+        //calculate the f,g,h of the current node.
         currentNode.g = currentNode.nodeCost ;
         //currentNode.h = manhattan(currentNode.xCoord, currentNode.yCoord, endX, endY);
         currentNode.h = linear(currentNode.xCoord, currentNode.yCoord, endX, endY);
@@ -89,24 +82,22 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         //cout<< "current h: "<< currentNode.h << endl;
         //cout<< "current f: "  << currentNode.f << endl;
 
-        //cout << "current node cost: " << currentNode.nodeCost << endl; //uncomment to see what neighbors are being tested
         //check if destination has been reached
         if (currentNode.getLocation() == endNode.getLocation() ) {
             std::cout << "end node found!" << endl;
             pathDiscovered = true; //the closed set now contains the final path from start to finish
             break;
         }
+
+        // scan through the all neighbors of the current node
         for (int i = 0; i < currentNode.neighbors.size(); ++i) {
             array<int, 2> tempCoors = currentNode.neighbors[i]; // get the coordinates of the neighbor
             //cout << "current neighbor coordinate: " << tempCoors[0] << " , " <<tempCoors[1] << endl;
             //check if the neighbor is valid within the graph boundary and is passable
             if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
-
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                 tempNeighbor.discovered = true; //set the neighbor node to discovered
-
                 //cout << "discovered status: " << currentNode.discovered << tempNeighbor.discovered << endl;
-
                 if(tempNeighbor.passable){
                     //calculate the f,g,h of the selected neighbor node:
                     tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
@@ -123,18 +114,11 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
                     // compare the f values of the current node and neighbors:
                     if ((tempNeighbor.f < currentNode.f) ) {
-
-                        //cout << "accepting the tentative cost of the new neighbor node " << endl;
                         openSet.push_back(tempNeighbor);
-
                     }
-
                 }
-
             }
-
         }
-
     }
 
     // Stop the timer
@@ -251,16 +235,11 @@ int Test() {
     string modeType, heuristicType;
     int start[2], end[2];
 
-    cout << "Enter the location of the file:";
-    cin >> loc;
-    //loc = "project1.txt";
-    readMap(loc, inputMap);
-
-
-    cout << "reading nodeGraph" << endl;
+    //cout << "Enter the location of the file:";
+    //cin >> loc;
+    readMap("/Users/michaelmaquera/school/a-star/data/project1.txt", inputMap);
 
     Graph nodeGraph(inputMap);// create graph of nodes
-
 
     cout << endl;
     cout << "the input map is:\n";
@@ -281,8 +260,6 @@ int Test() {
     //End Coordinates:
     end[0] = 3;
     end[1] = 4;
-
-    //working combos so far, start: 0,0  to 0,4 , 0,0 to 3,0 , 0,0 to 3,1 ,3,2
 
     PlanPath(inputMap, start, end, mode, heuristic, nodeGraph);
 

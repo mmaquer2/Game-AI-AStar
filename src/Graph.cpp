@@ -44,6 +44,9 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
     height = 4;
     width = 5;
 
+    //height = graph.size();
+    //width = graph[0].size();
+
     findNodeNeighbors(); //find all neighbor nodes in the graph
 
 

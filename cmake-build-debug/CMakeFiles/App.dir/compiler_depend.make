@@ -232,6 +232,7 @@ CMakeFiles/App.dir/src/Graph.cpp.o: ../src/Graph.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/array
 
 CMakeFiles/App.dir/src/Node.cpp.o: ../src/Node.cpp \
+  ../include/Node.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/pthread.h \
@@ -457,7 +458,6 @@ CMakeFiles/App.dir/src/Node.cpp.o: ../src/Node.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__bit_reference \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/__split_buffer \
-  ../include/Node.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/array
 
 CMakeFiles/App.dir/src/main.cpp.o: ../src/main.cpp \
