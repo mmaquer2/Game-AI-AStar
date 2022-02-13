@@ -14,9 +14,9 @@ using namespace std;
 bool inBounds(int x, int y, int height,int width){
     if( (x >= 0) &&
         (y >= 0) &&
-        (x<= height) &&
+        (x <= height) &&
         (y <= height) &&
-        (x <=width) &&
+        (x <= width) &&
         (y <= width))
     {return true;}
     else {return false;}
@@ -105,7 +105,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                 tempNeighbor.discovered = true; //set the neighbor node to discovered
 
-                cout << "discovered status: " << currentNode.discovered << tempNeighbor.discovered << endl;
+                //cout << "discovered status: " << currentNode.discovered << tempNeighbor.discovered << endl;
 
                 if(tempNeighbor.passable){
                     //calculate the f,g,h of the selected neighbor node:
@@ -166,15 +166,21 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
         //+ = path node
         //t = touched/discovered noe
         //e = expanded nodes
-        //TODO Annotate the map based on the mode selected
 
         if (mode == Expanded) {
 
+            for(auto temp : closedSet){
+                outputMap[temp.xCoord][temp.yCoord] = '+';
+            }
 
         }
 
         if (mode == All) {
 
+            //write the final path to the output map
+            for(auto temp : closedSet){
+                outputMap[temp.xCoord][temp.yCoord] = '+';
+            }
 
             //iterate through the examined/modified inputMap and
             for(int i = 0; i < nodeGraph.graph.size(); i++){
@@ -202,11 +208,13 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
                         outputMap[i][j] = 'd';
                     }
 
-                    //set path nodes
+
                 }
 
             }
-            
+
+
+
         }
 
         std::cout << endl;
@@ -224,7 +232,7 @@ void PlanPath(const vector<vector<char>>& inputMap, int start[2], int destinatio
 
             Node temp = nodeGraph.graph[i][j];
 
-            cout<< "node"<< i <<"," << j <<" :"<< temp.h << temp.g << temp.f << temp.passable << temp.discovered << endl;
+            cout << "node"<< i <<"," << j <<" :"<< temp.h << temp.g << temp.f << temp.passable << temp.discovered << endl;
 
         }
     }
@@ -271,8 +279,8 @@ int Test() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 1;
-    end[1] = 1;
+    end[0] = 3;
+    end[1] = 4;
 
     //working combos so far, start: 0,0  to 0,4 , 0,0 to 3,0 , 0,0 to 3,1 ,3,2
 

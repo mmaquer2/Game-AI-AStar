@@ -58,7 +58,7 @@ Node::Node(int x, int y) {
 		neighbors.push_back(up);
 		neighbors.push_back(down);
 		
-		std::cout << "added new neighbors" << endl;
+		//std::cout << "added new neighbors" << endl;
 		
 		return 0;
 	}

@@ -29,7 +29,7 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 			}
 
 			std::cout << temp << std::endl;
-			std::cout << "new node added from  " << i << " , " << j << " cost: " << tempNode.nodeCost << " passable: " << tempNode.passable << endl;
+			//std::cout << "new node added from  " << i << " , " << j << " cost: " << tempNode.nodeCost << " passable: " << tempNode.passable << endl;
 			
 			//add node to the graph vector
 			
@@ -42,7 +42,7 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 
     //set the height and width of the graph to check boundries
     height = 4;
-    width = 4;
+    width = 5;
 
     findNodeNeighbors(); //find all neighbor nodes in the graph
 
