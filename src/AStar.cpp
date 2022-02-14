@@ -161,20 +161,21 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                        //check if tempNeighbor is in openSet
 
                        //if not in open set add to open set and calculate f,g,h values
-                       if( !searchOpenList(tempNeighbor,openSet)){
+                       //if( !searchOpenList(tempNeighbor,openSet)){
 
-                           openSet.push_back(tempNeighbor);
+                           //openSet.push_back(tempNeighbor);
 
-                       }
-                       else {
+                      // }
+                       //else {
 
-                           if ((tempNeighbor.g <  currentNode.g) ) {
+                           if ((tempNeighbor.f <  currentNode.f) ) {
                                cout << "--neighbor added to open set--" << endl;
                                // if the neighbor node has a lower f value add it to the open set
+                               openSet.push_back(tempNeighbor);
 
                            }
 
-                       }
+                       //}
 
 
                     }
@@ -287,8 +288,8 @@ bool AStar::inBounds(int x, int y, int height,int width) {
 int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
-    //int avgDiff = 10; // the avg difference of all nodes
-    int result =  (dx + dy);
+    int avgDiff = 10; // the avg difference of all nodes
+    int result = avgDiff * (dx + dy);
     return result;
 
 }
@@ -298,8 +299,8 @@ int AStar::linearDistance(int x, int y, int endX, int endY,int weight) {
 
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
-    //int avgDiff = 10;
-    int result = (dx * dx + dy * dy);
+    int avgDiff = 10;
+    int result = avgDiff * (dx * dx + dy * dy);
     return result;
 }
 
@@ -373,7 +374,7 @@ int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
 
     int dx = fabs( x - startX);
     int dy = fabs(y - startY);
-    int gValue = (dx + dy);
+    int gValue = (dx + dy) + weight;
     return gValue;
 
 }
