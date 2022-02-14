@@ -21,6 +21,9 @@ public:
 
     Node(array<int, 2> *pArray);
 
+    Node(Node *pNode);
+
+
     int nodeCost = 0;
 	int xCoord = 0;
 	int yCoord = 0;
@@ -28,7 +31,6 @@ public:
 	bool discovered;
     Node* parentNode;
 	bool expanded;
-	bool closed;
 	int g = 0;
 	int h = 0;
 	int f = 0;
@@ -40,7 +42,6 @@ public:
 
 	array<int ,2> getLocation();
 	int calculateNeighbors();
-	vector<std::array<int, 2>> getNeighbors();
 
 	int getH();
 	int getG();

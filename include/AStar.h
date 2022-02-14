@@ -42,6 +42,9 @@ public:
 
     vector<Node> makePath(Node start, Node end);
 
+    vector<Node> reconstructPath(unordered_map<Node, int> , Node current);
+
+
 };
 
 

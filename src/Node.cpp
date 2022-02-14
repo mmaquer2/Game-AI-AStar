@@ -10,6 +10,7 @@ Node::Node(int x, int y) {
 		yCoord = y;
 
 
+
 };
 
 	//getter function to return the x,y values of the node
@@ -17,7 +18,7 @@ Node::Node(int x, int y) {
 		std::array<int ,2> cords;
 		cords[0] = xCoord;
 		cords[1] = yCoord;
-        parentNode = nullptr;
+
 
 		return cords;
 	}
@@ -106,6 +107,10 @@ Node::Node(Node **pNode) {
 }
 
 Node::Node(array<int, 2> *pArray) {
+
+}
+
+Node::Node(Node *pNode) {
 
 }
 

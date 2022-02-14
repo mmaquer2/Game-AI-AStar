@@ -1,6 +1,8 @@
 
 #include "../include/AStar.h"
 
+
+
 //AStar Constructor function
 AStar::AStar() {
 
@@ -30,8 +32,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 2;
-    end[1] = 2;
+    end[0] = 3;
+    end[1] = 0;
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -48,6 +50,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     vector<Node> unPassable; //container for holding discovered unpassable noes
 
     //unordered_map<Node, int> cameFrom;
+    // map <key, value pair>   hash(key) = value;
+    unordered_map<int, Node> dis;
     //unordered_map<Node, int> gScore;
     //unordered_map<Node, int> fScore;
 
@@ -80,30 +84,22 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
     //start path search
     while (!openSet.empty()) {
-        cout << "current open set size: " << openSet.size() << endl;
 
-        //find the index of the lowest f value node, in the openSet
-        int currentIndex = findLowestFValue(openSet);
-
-        Node currentNode = openSet[currentIndex];
-        cout << "selected a new current node" << currentNode.xCoord << currentNode.yCoord << endl;
+        int currentIndex = findLowestFValue(openSet);  //find the index of the lowest f value node, in the openSet
+        Node currentNode = openSet[currentIndex]; //get the best possible f value from the node
         currentNode.expanded = true; // set the current node expanded flag to true
         currentNode.discovered = true; // set the temp node to discovered flag to true
 
         openSet.erase(openSet.begin()+currentIndex); //remove the current node from the openSet
-        cout<< "new open set size" << openSet.size() << endl;
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
         //calculate the f,g,h of the current node.
-        //currentNode.g = currentNode.nodeCost ;
-        currentNode.g = gValueDistance(currentNode.xCoord, currentNode.yCoord,startX,startY, currentNode.nodeCost);
-
+        currentNode.g = distanceToNeighbor(currentNode.xCoord, currentNode.yCoord,startX,startY);
         if(heuristic == "manhattan"){
             currentNode.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY,currentNode.nodeCost);
         } else {
             currentNode.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, currentNode.nodeCost);
         }
-
         currentNode.f = currentNode.g + currentNode.h;
 
         cout << "current node data" << endl;
@@ -120,7 +116,6 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         //check if destination has been reached
         if (currentNode.getLocation() == endNode.getLocation() ) {
             std::cout << "End node found!" << endl;
-
             pathDiscovered = true; //the closed set now contains the final path from start to finish
             //reconstruct the final path from start to end
             vector<Node> completePath = makePath(startNode, endNode);
@@ -140,7 +135,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 //check if this neighbor node is already in the closed list
                 if(!searchClosedList(tempNeighbor,closedSet)){
                     tempNeighbor.discovered = true; //set the neighbor node to discovered
-                    //cout << "discovered status: " << currentNode.discovered << tempNeighbor.discovered << endl;
+
                     if(!tempNeighbor.passable){
                         unPassable.push_back(tempNeighbor);
                     } else{
@@ -149,34 +144,28 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
                        //check if the new cost is less than the neighbor or is not in the open list
                        if ((tentativeCost <  currentNode.g) || !openListStatus ) {
-                           cout << "--neighbor added to open set--" << endl;
+
 
                            //calculate f,g,h values
                            tempNeighbor.g = tentativeCost;
                            tempNeighbor.h = distanceToNeighbor(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
                            tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
-                           //if(heuristic == "manhattan"){
-                              // tempNeighbor.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
-                           //} else {
-                             //  tempNeighbor.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
-                           //}
 
                            //set parent and neighbor node relationships
+                           tempNeighbor.parentNode = new Node(0,0);
                            tempNeighbor.parentNode = &currentNode;
+
                            tempNeighbor.parentLocation = {currentNode.xCoord, currentNode.yCoord};
 
                            //pass reference back into graph matrix
                            nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
 
-                           cout << "neighbor node data" << endl;
-                           cout << tempNeighbor.xCoord << "," << tempNeighbor.yCoord << endl;
-                           cout<< "temp g: "<< tempNeighbor.g << endl;
-                           cout<< "temp h: "<< tempNeighbor.h << endl;
-                           cout<< "temp f: "  << tempNeighbor.f << endl;
+                           cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
+
+                           cout << "--neighbor added to open set--" << endl;
+                           openSet.push_back(tempNeighbor); // add neighbor node to the open set
 
 
-                           // add the neighbor node to the open set
-                           openSet.push_back(tempNeighbor);
                        }
 
                     }
@@ -258,6 +247,28 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
                 }
             }
+        }
+
+        vector<Node> finalPath;
+        vector<std::array<int, 2>> path;
+
+        cout << "testing path counstruct funcion...."<< endl;
+        Node curr = endNode;
+
+        cout << endNode.xCoord << endNode.yCoord << endl;
+        cout << "curr node values" ;
+        cout << curr.xCoord << curr.yCoord << endl;
+
+        //return final path by parent nodes
+        while(curr.getLocation() != startNode.getLocation()){
+            cout << curr.xCoord << curr.yCoord << endl;
+            array<int ,2 > pathNode = {curr.xCoord, curr.yCoord};
+
+            path.push_back(pathNode);
+
+            //go to the next node
+            curr = curr.parentNode;
+
         }
 
         //set start and end nodes on the output map
@@ -377,7 +388,7 @@ int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
 int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int neighborY) {
     int dValue =0;
     int dx = fabs( currentX - neighborX);
-    int dy = fabs(currentX - neighborY);
+    int dy = fabs(currentY - neighborY);
 
     if(dx > dy){
         dValue = 14 * dy + 10*(dx - dy);
@@ -404,9 +415,19 @@ vector<Node> AStar::makePath(Node start, Node end){
         //finalPath.push_back(temp);
 
         //go to the next node
-        temp = &temp.parentLocation;
+        temp = temp.parentNode;
 
     }
+
+    Node current = end;
+
+   // while( current != start){
+     //   finalPath.push_back(current);
+       // cout << current.xCoord << current.yCoord;
+        //current = current.parentNode;
+
+    //}
+
 
     cout << "printing path " << endl;
     //for(int i = 0; i <finalPath.size(); i++){
@@ -427,9 +448,20 @@ vector<Node> AStar::makePath(Node start, Node end){
     //reverse path
 
     return finalPath;
+}
+
+
+//recreate the final path using the index of the current node and the cameFrom map
+vector<Node> AStar::reconstructPath(unordered_map<Node,int> cameFrom, Node curr) {
+    vector<Node> finalPath;
+
+    //while current in came from keys
+        //nextNode = cameFrom[current];
+        //finalPath.push_back(nextNode);
 
 
 
+    return finalPath ;
 }
 
 
