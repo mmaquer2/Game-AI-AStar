@@ -3,6 +3,35 @@
 #include "gridNode.cpp"
 
 
+//create custom grid node for unordered map
+struct gridNode {
+    int x;
+    int y;
+};
+
+bool operator==(const gridNode& lhs, const gridNode& rhs) {
+    return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+struct gridHash {
+        std::size_t operator()(const gridNode& id) const noexcept {
+            // NOTE: better to use something like boost hash_combine
+            return std::hash<int>()(id.x ^ (id.y << 1));
+        }
+};
+
+template<>
+struct std::hash<gridNode>
+{
+    std::size_t operator()(gridNode const& current) const noexcept
+    {
+        std::size_t h1 = std::hash<int>{}(current.x);
+        std::size_t h2 = std::hash<int>{}(current.y);
+        return h1 ^ (h2 << 1); // or use boost::hash_combine
+    }
+};
+
+
 //AStar Constructor function
 AStar::AStar() {
 
@@ -119,6 +148,42 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         if (currentNode.getLocation() == endNode.getLocation() ) {
             std::cout << "End node found!" << endl;
             pathDiscovered = true; //the closed set now contains the final path from start to finish
+
+            gridNode star, en;
+            star.x = startX;
+            star.y = startY;
+            en.x = endY;
+            en.y = endY;
+
+            // make best path map from current node
+            vector<gridNode> finalMap; //container for final path
+
+            //test to print entire
+            cout << "printing nodes after end." << endl;
+            for (auto const& element : cameFrom){
+                cout<< "key: "<< element.first.x << element.first.y << " value: ";
+               std::cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
+            }
+
+
+            //print out every grid node
+            //total_path := {current}
+            //while current in cameFrom.Keys:
+            //current := cameFrom[current]
+            //total_path.prepend(current)
+            //return total_path
+
+            gridNode temp;
+            temp.x = currentNode.xCoord;
+            temp.y = currentNode.yCoord;
+
+            gridNode result;
+
+            result = cameFrom[temp];
+            finalMap.push_back(result);
+
+            cout<< "result test here: " << result.x << "," << result.y << endl;
+
 
             //vector<Node> completePath = makePath(startNode, endNode);  //reconstruct the final path from start to end
             break;
@@ -376,6 +441,9 @@ int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int nei
 //function to return the final best path in terms of x,y values
 vector<array<int,2>> makePath(unordered_map<int, int> , Node current){
     vector<array<int,2>> finalPath;
+
+
+
 
     return finalPath;
 }
