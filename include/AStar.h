@@ -38,9 +38,7 @@ public:
 
     int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY);
 
-    vector<Node> makePath(Node start, Node end);
-
-    vector<Node> reconstructPath(unordered_map<Node, int> , Node current);
+    vector<array<int,2>> makePath(unordered_map<int, int> , Node current);
 
 
 };
