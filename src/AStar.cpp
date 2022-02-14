@@ -9,15 +9,16 @@ struct gridNode {
     int y;
 };
 
+//override equality operator for gridNode
 bool operator==(const gridNode& lhs, const gridNode& rhs) {
     return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
+//gridNode hash function for unordered map
 struct gridHash {
-        std::size_t operator()(const gridNode& id) const noexcept {
-            // NOTE: better to use something like boost hash_combine
-            return std::hash<int>()(id.x ^ (id.y << 1));
-        }
+    std::size_t operator()(const gridNode& id) const noexcept {
+        return std::hash<int>()(id.x ^ (id.y << 1));
+    }
 };
 
 template<>
@@ -62,8 +63,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 3;
-    end[1] = 3;
+    end[0] = 2;
+    end[1] = 2;
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -79,8 +80,10 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     vector<Node> closedSet; //container for tracking exhausted nodes
     vector<Node> unPassable; //container for holding discovered unpassable noes
 
-
+    vector<gridNode> finalMap;
+    vector<vector<char>> outputMap = inputMap;
     unordered_map<gridNode, gridNode> cameFrom; // map <key, value pair>   hash(key) = value, container for backtracking nodes
+
 
     //unordered_map<Node, int> gScore;
     //unordered_map<Node, int> fScore;
@@ -156,7 +159,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             en.y = endY;
 
             // make best path map from current node
-            vector<gridNode> finalMap; //container for final path
+             //container for final path
 
             //test to print entire
             cout << "printing nodes after end." << endl;
@@ -165,24 +168,22 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                std::cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
             }
 
-
-            //print out every grid node
-            //total_path := {current}
-            //while current in cameFrom.Keys:
-            //current := cameFrom[current]
-            //total_path.prepend(current)
-            //return total_path
-
             gridNode temp;
             temp.x = currentNode.xCoord;
             temp.y = currentNode.yCoord;
+            while(temp.x != star.x && temp.y != star.y){
+                temp = cameFrom[temp];
+                cout <<"temp: " << temp.x << temp.y<< endl;
+                finalMap.push_back(temp);
+            }
 
-            gridNode result;
 
-            result = cameFrom[temp];
-            finalMap.push_back(result);
 
-            cout<< "result test here: " << result.x << "," << result.y << endl;
+            for(int i = 0; i < finalMap.size(); i++){
+                gridNode temp = finalMap[i];
+                outputMap[temp.x][temp.y] = '+';
+
+            }
 
 
             //vector<Node> completePath = makePath(startNode, endNode);  //reconstruct the final path from start to end
@@ -256,17 +257,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     }
     else {
 
-        vector<vector<char>> outputMap = inputMap; // copy inputMap
+         // copy inputMap
 
         //just display the path
         if (mode == "Standard") {
-
-            for(auto temp : closedSet){
-                outputMap[temp.xCoord][temp.yCoord] = '+';
-            }
-
-            outputMap[startX][startY] = 's';
-            outputMap[endX][endY] = 'd';
+           // outputMap[startX][startY] = 's';
+           // outputMap[endX][endY] = 'd';
 
 
         }
@@ -274,9 +270,9 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         //display path and expanded nodes
         if (mode == "Expanded") {
 
-            for(auto temp : closedSet){
-                outputMap[temp.xCoord][temp.yCoord] = '+';
-            }
+           // for(auto temp : closedSet){
+            //    outputMap[temp.xCoord][temp.yCoord] = '+';
+           // }
 
 
         }
@@ -286,7 +282,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
             //write the final path to the output map
             for(auto temp : closedSet){
-                outputMap[temp.xCoord][temp.yCoord] = '+';
+               // outputMap[temp.xCoord][temp.yCoord] = '+';
             }
 
             //iterate through the examined/modified inputMap and
@@ -297,12 +293,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
                     //set discovered nodes
                     if(temp.discovered){
-                        outputMap[i][j] = 't';
+                        //outputMap[i][j] = 't';
                     }
 
                     //set expanded nodes
                     if(temp.expanded){
-                        outputMap[i][j] = 'e';
+                       // outputMap[i][j] = 'e';
                     }
 
                 }
@@ -310,7 +306,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         }
 
         //set start and end nodes on the output map
-        outputMap[startX][startY] = 's';
+       outputMap[startX][startY] = 's';
         outputMap[endX][endY] = 'd';
 
         std::cout << endl;
