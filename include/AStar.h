@@ -40,6 +40,8 @@ public:
 
     int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY);
 
+    vector<Node> makePath(Node start, Node end);
+
 };
 
 

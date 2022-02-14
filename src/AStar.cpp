@@ -119,8 +119,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
         //check if destination has been reached
         if (currentNode.getLocation() == endNode.getLocation() ) {
-            std::cout << "end node found!" << endl;
+            std::cout << "End node found!" << endl;
+
             pathDiscovered = true; //the closed set now contains the final path from start to finish
+            //reconstruct the final path from start to end
+            vector<Node> completePath = makePath(startNode, endNode);
             break;
         }
 
@@ -142,36 +145,37 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         unPassable.push_back(tempNeighbor);
                     } else{
 
-                        //calculate the f,g,h of the selected neighbor node:
-                        //tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
-                        tempNeighbor.g = gValueDistance(tempNeighbor.xCoord, tempNeighbor.yCoord,startX,startY, tempNeighbor.nodeCost);
-
-                        if(heuristic == "manhattan"){
-                            tempNeighbor.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
-                        } else {
-                            tempNeighbor.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
-                        }
-
-                        tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
-
-                        //pass reference back into graph matrix
-                        nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
-
-                        cout << "neighbor node data" << endl;
-                        cout << tempNeighbor.xCoord << "," << tempNeighbor.yCoord << endl;
-                        cout<< "temp g: "<< tempNeighbor.g << endl;
-                        cout<< "temp h: "<< tempNeighbor.h << endl;
-                        cout<< "temp f: "  << tempNeighbor.f << endl;
-
                        int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord);
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
                        //check if the new cost is less than the neighbor or is not in the open list
                        if ((tentativeCost <  currentNode.g) || !openListStatus ) {
                            cout << "--neighbor added to open set--" << endl;
 
-                           //recalculate f,g,h values
-                           
-                           // if the neighbor node has a lower f value add it to the open set
+                           //calculate f,g,h values
+                           tempNeighbor.g = tentativeCost;
+                           tempNeighbor.h = distanceToNeighbor(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
+                           tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
+                           //if(heuristic == "manhattan"){
+                              // tempNeighbor.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
+                           //} else {
+                             //  tempNeighbor.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
+                           //}
+
+                           //set parent and neighbor node relationships
+                           tempNeighbor.parentNode = &currentNode;
+                           tempNeighbor.parentLocation = {currentNode.xCoord, currentNode.yCoord};
+
+                           //pass reference back into graph matrix
+                           nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
+
+                           cout << "neighbor node data" << endl;
+                           cout << tempNeighbor.xCoord << "," << tempNeighbor.yCoord << endl;
+                           cout<< "temp g: "<< tempNeighbor.g << endl;
+                           cout<< "temp h: "<< tempNeighbor.h << endl;
+                           cout<< "temp f: "  << tempNeighbor.f << endl;
+
+
+                           // add the neighbor node to the open set
                            openSet.push_back(tempNeighbor);
                        }
 
@@ -335,7 +339,6 @@ int AStar::findLowestFValue(vector<Node> input) {
 
 //function to search the open list for neighbor nodes
 bool AStar::searchOpenList(Node input,vector<Node> openSet ) {
-
     bool foundStatus = false;
     for(auto temp : openSet){
         int tempX = temp.xCoord;
@@ -345,14 +348,12 @@ bool AStar::searchOpenList(Node input,vector<Node> openSet ) {
             return foundStatus;
         }
     }
-
     return foundStatus;
 }
 
 
 //function to search the closed list for present nodes
 bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
-
     bool foundStatus = false;
     for(auto temp : closedSet){
         int tempX = temp.xCoord;
@@ -362,13 +363,10 @@ bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
             return foundStatus;
         }
     }
-
     return foundStatus;
 }
 
 int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
-
-
     int dx = fabs( x - startX);
     int dy = fabs(y - startY);
     int gValue = (dx + dy) + weight;
@@ -388,6 +386,50 @@ int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int nei
     }
 
     return dValue;
+}
+
+
+vector<Node> AStar::makePath(Node start, Node end){
+
+    vector<Node> finalPath;
+    vector<std::array<int, 2>> path;
+
+    Node temp = end;
+    //return final path by parent nodes
+    while(temp.xCoord != start.xCoord && temp.yCoord != start.yCoord){
+        cout << temp.xCoord << temp.yCoord << endl;
+        array<int ,2 > pathNode = {temp.xCoord, temp.yCoord};
+
+        path.push_back(pathNode);
+        //finalPath.push_back(temp);
+
+        //go to the next node
+        temp = &temp.parentLocation;
+
+    }
+
+    cout << "printing path " << endl;
+    //for(int i = 0; i <finalPath.size(); i++){
+          //Node temp = finalPath[i];
+
+          //cout << temp.xCoord <<"," << temp.yCoord << endl;
+
+    //}
+
+    for(int i = 0; i < path.size(); i++){
+       // array<int ,2 > pathNode = {path[i], temp.yCoord};
+       cout << path[i][0] << path[i][1] << endl;
+
+       // cout << temp.xCoord <<"," << temp.yCoord << endl;
+
+    }
+
+    //reverse path
+
+    return finalPath;
+
+
+
 }
 
 

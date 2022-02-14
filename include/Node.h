@@ -17,11 +17,16 @@ public:
 
     Node(int x, int y);
 
-	int nodeCost = 0;
+    Node(Node **pNode);
+
+    Node(array<int, 2> *pArray);
+
+    int nodeCost = 0;
 	int xCoord = 0;
 	int yCoord = 0;
 	bool passable;
 	bool discovered;
+    Node* parentNode;
 	bool expanded;
 	bool closed;
 	int g = 0;
