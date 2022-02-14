@@ -9,8 +9,6 @@ Node::Node(int x, int y) {
 		xCoord = x;
 		yCoord = y;
 
-
-
 };
 
 	//getter function to return the x,y values of the node
@@ -50,6 +48,9 @@ Node::Node(int x, int y) {
 		bottomLeft[0] = xCoord - 1;
 		bottomLeft[1] = yCoord - 1;
 
+        right[0] = xCoord + 1;
+        right[1] = yCoord;
+
 		left[0] = xCoord - 1;
 		left[1] = yCoord;
 
@@ -67,9 +68,7 @@ Node::Node(int x, int y) {
         neighbors.push_back(topLeft);
         neighbors.push_back(bottomLeft);
         neighbors.push_back(bottomRight);
-		
-		//std::cout << "added new neighbors" << endl;
-		
+
 		return 0;
 	}
 

@@ -145,16 +145,14 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                        //check if the new cost is less than the neighbor or is not in the open list
                        if ((tentativeCost <  currentNode.g) || !openListStatus ) {
 
-
                            //calculate f,g,h values
                            tempNeighbor.g = tentativeCost;
-                           tempNeighbor.h = distanceToNeighbor(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
+                           tempNeighbor.h = manhattanDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY,tempNeighbor.nodeCost);
                            tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
                            //set parent and neighbor node relationships
                            tempNeighbor.parentNode = new Node(0,0);
                            tempNeighbor.parentNode = &currentNode;
-
                            tempNeighbor.parentLocation = {currentNode.xCoord, currentNode.yCoord};
 
                            //pass reference back into graph matrix
@@ -252,7 +250,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         vector<Node> finalPath;
         vector<std::array<int, 2>> path;
 
-        cout << "testing path counstruct funcion...."<< endl;
+        cout << "testing path construct function...."<< endl;
         Node curr = endNode;
 
         cout << endNode.xCoord << endNode.yCoord << endl;
@@ -301,7 +299,7 @@ int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
     int avgDiff = 10; // the avg difference of all nodes
-    int result = avgDiff * (dx + dy);
+    int result = dx + dy;
     return result;
 
 }
