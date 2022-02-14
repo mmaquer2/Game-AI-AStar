@@ -30,10 +30,10 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 5;
-    end[1] = 6;
+    end[0] = 2;
+    end[1] = 2;
 
-    findPath(inputMap, start, end, "Standard", "linear", nodeGraph);
+    findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
 }
 
@@ -92,9 +92,9 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         currentNode.g = gValueDistance(currentNode.xCoord, currentNode.yCoord,startX,startY, currentNode.nodeCost);
 
         if(heuristic == "manhattan"){
-            currentNode.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY);
+            currentNode.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY,currentNode.nodeCost);
         } else {
-            currentNode.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY);
+            currentNode.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, currentNode.nodeCost);
         }
 
         currentNode.f = currentNode.g + currentNode.h;
@@ -134,17 +134,17 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                     if(!tempNeighbor.passable){
                         unPassable.push_back(tempNeighbor);
                     } else{
+
                         //calculate the f,g,h of the selected neighbor node:
                         //tempNeighbor.g = currentNode.nodeCost + tempNeighbor.nodeCost;
                         tempNeighbor.g = gValueDistance(tempNeighbor.xCoord, tempNeighbor.yCoord,startX,startY, tempNeighbor.nodeCost);
 
                         if(heuristic == "manhattan"){
-                            tempNeighbor.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY);
+                            tempNeighbor.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
                         } else {
-                            tempNeighbor.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY);
+                            tempNeighbor.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, tempNeighbor.nodeCost);
                         }
 
-                        tempNeighbor.h = linearDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY);
                         tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
                         //pass reference back into graph matrix
@@ -156,15 +156,27 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         cout<< "temp h: "<< tempNeighbor.h << endl;
                         cout<< "temp f: "  << tempNeighbor.f << endl;
 
-                        //loop to select the lowest cost of all neighbors...?
 
-                        // compare the f values of the current node and neighbors:
 
-                        if ((tempNeighbor.f <= currentNode.f) ) {
-                            cout << "--neighbor added to open set--" << endl;
-                            openSet.push_back(tempNeighbor);
-                             // if the neighbor node has a lower f value add it to the open set
-                        }
+                       //check if tempNeighbor is in openSet
+
+                       //if not in open set add to open set and calculate f,g,h values
+                       if( !searchOpenList(tempNeighbor,openSet)){
+
+                           openSet.push_back(tempNeighbor);
+
+                       }
+                       else {
+
+                           if ((tempNeighbor.g <  currentNode.g) ) {
+                               cout << "--neighbor added to open set--" << endl;
+                               // if the neighbor node has a lower f value add it to the open set
+
+                           }
+
+                       }
+
+
                     }
                 }
             }
@@ -272,22 +284,23 @@ bool AStar::inBounds(int x, int y, int height,int width) {
     else {return false;}
 }
 
-int AStar::manhattanDistance(int x, int y, int endX, int endY) {
+int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
-    int avgDiff = 10; // the avg difference of all nodes
-
-    return avgDiff * (dx + dy);
+    //int avgDiff = 10; // the avg difference of all nodes
+    int result =  (dx + dy);
+    return result;
 
 }
 
 
-int AStar::linearDistance(int x, int y, int endX, int endY) {
+int AStar::linearDistance(int x, int y, int endX, int endY,int weight) {
 
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
-    int avgDiff = 10;
-    return avgDiff * (dx * dx + dy * dy);
+    //int avgDiff = 10;
+    int result = (dx * dx + dy * dy);
+    return result;
 }
 
 int AStar::getHeight() {
@@ -322,7 +335,7 @@ int AStar::findLowestFValue(vector<Node> input) {
     return lowestIndex;
 }
 
-//function to search the closed list for present nodes
+//function to search the open list for neighbor nodes
 bool AStar::searchOpenList(Node input,vector<Node> openSet ) {
 
     bool foundStatus = false;

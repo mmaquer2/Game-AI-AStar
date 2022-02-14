@@ -14,6 +14,9 @@ class Node {
 
 public:
 
+
+    Node(int x, int y);
+
 	int nodeCost = 0;
 	int xCoord = 0;
 	int yCoord = 0;
@@ -25,9 +28,11 @@ public:
 	int h = 0;
 	int f = 0;
 
+    array<int,2> parentLocation;
+
 	vector<std::array<int, 2>> neighbors;
 	vector<Node> cameFrom;
-	Node(int x, int y);
+
 	array<int ,2> getLocation();
 	int calculateNeighbors();
 	vector<std::array<int, 2>> getNeighbors();
@@ -39,6 +44,10 @@ public:
 	int setH(int newH);
 	int setG(int newG);
 	int setF(int newF);
+
+    private:
+
+
 
 
 };

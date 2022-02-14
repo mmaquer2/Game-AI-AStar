@@ -8,6 +8,8 @@ using namespace std;
 Node::Node(int x, int y) {
 		xCoord = x;
 		yCoord = y;
+
+
 };
 
 	//getter function to return the x,y values of the node
@@ -96,5 +98,7 @@ Node::Node(int x, int y) {
 	int Node::setF(int newF){
 		f = newF;
 		return f;
-	};
+	}
+
+
 

@@ -27,8 +27,8 @@ public:
     int findLowestFValue(vector<Node> input);
 
     bool inBounds(int x, int y, int height,int width);
-    int manhattanDistance(int x, int y, int endX, int endY);
-    int linearDistance(int x, int y, int endX, int endY);
+    int manhattanDistance(int x, int y, int endX, int endY, int weight);
+    int linearDistance(int x, int y, int endX, int endY, int weight);
     int gValueDistance(int x, int y, int startX, int startY, int weight);
 
     bool searchClosedList(Node input, vector<Node> closedSet);
