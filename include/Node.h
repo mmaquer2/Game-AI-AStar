@@ -23,6 +23,7 @@ public:
 
     Node(Node *pNode);
 
+    hash<int> hash;
 
     int nodeCost = 0;
 	int xCoord = 0;
@@ -43,13 +44,6 @@ public:
 	array<int ,2> getLocation();
 	int calculateNeighbors();
 
-	int getH();
-	int getG();
-	int getF();
-
-	int setH(int newH);
-	int setG(int newG);
-	int setF(int newF);
 
     private:
 

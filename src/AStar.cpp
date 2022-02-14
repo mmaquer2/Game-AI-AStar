@@ -1,6 +1,9 @@
 
 #include "../include/AStar.h"
 
+
+
+
 //AStar Constructor function
 AStar::AStar() {
 
@@ -38,34 +41,18 @@ AStar::AStar() {
 
 }
 
+
+
 // A-star find path function
 void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *destination, string mode, string heuristic,
              Graph nodeGraph) {
-    using namespace chrono;
-    steady_clock::time_point clock_begin = steady_clock::now(); // Start the timer
 
     vector<Node> openSet; //container for tracking currently extended nodes
     vector<Node> closedSet; //container for tracking exhausted nodes
     vector<Node> unPassable; //container for holding discovered unpassable noes
 
 
-    //unordered_map<Node, int> cameFrom;
-    // map <key, value pair>   hash(key) = value;
-
-    //typedef Node key;
-    //typedef string value;
-
-    //auto key_selector = [](auto pair){return pair.first;};
-    //auto value_selector = [](auto pair){return pair.second;};
-    //unordered_map<key, value> cameFrom;
-    //vector<key> keys(cameFrom.size());
-    //vector<value> values(cameFrom.size());
-    //transform(cameFrom.begin(), cameFrom.end(), keys.begin(),key_selector);
-    //transform(cameFrom.begin(), cameFrom.end(), values.begin(),value_selector);
-
-
-
-
+    unordered_map<gridNode, gridNode> cameFrom; // map <key, value pair>   hash(key) = value, container for backtracking nodes
 
     //unordered_map<Node, int> gScore;
     //unordered_map<Node, int> fScore;
@@ -76,6 +63,9 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     endX = destination[0];
     endY = destination[1];
 
+    using namespace chrono;
+    steady_clock::time_point clock_begin = steady_clock::now(); // Start the timer
+
     //check if start and end node are in bounds
     if(!inBounds(startX, startY, nodeGraph.height, nodeGraph.width) ||
        (!inBounds(endX, endY, nodeGraph.height, nodeGraph.width))){
@@ -85,8 +75,6 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
     Node startNode = nodeGraph.graph[startX][startY];  //get the starting node from the graph
     Node endNode = nodeGraph.graph[endX][endY];  //get the end node from the graph
-
-    //gScore[startNode] = 0;
 
     //check if start and end nodes are passable
     if(!startNode.passable || !endNode.passable){
@@ -176,10 +164,17 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                            cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
 
                            cout << "--neighbor added to open set--" << endl;
-                           
+
                            //string nodeKey = tempNeighbor.xCoord + tempNeighbor.yCoord;
-                            string nodeKey = "test";
-                           // cameFrom[tempNeighbor] = nodeKey;
+                           gridNode curr;
+                           curr.x = currentNode.xCoord;
+                           curr.y = currentNode.yCoord;
+
+                           gridNode neighbor;
+                           neighbor.x = tempNeighbor.xCoord;
+                           neighbor.y = tempNeighbor.yCoord;
+
+                           cameFrom[neighbor] = curr;
 
                            openSet.push_back(tempNeighbor); // add neighbor node to the open set
 
@@ -206,16 +201,9 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     }
     else {
 
-        for(auto temp : closedSet){
-            //set part of final path to true here....
-            std::cout << temp.xCoord << "," << temp.yCoord << endl;
-        }
+        vector<vector<char>> outputMap = inputMap; // copy inputMap
 
-        // Annotate & print the output map
-        vector<vector<char>> outputMap = inputMap;
-
-
-        //just display the play
+        //just display the path
         if (mode == "Standard") {
 
             for(auto temp : closedSet){
@@ -264,14 +252,6 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
                 }
             }
-        }
-
-
-        cout << "looking at parent nodes" << endl;
-        for(int i = 0; i < closedSet.size(); i++){
-            Node temp = openSet[i];
-            cout << "parents: " << temp.parentLocation[0] <<"," << temp.parentLocation[1] << endl;
-
         }
 
         //set start and end nodes on the output map

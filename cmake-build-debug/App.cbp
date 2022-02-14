@@ -91,6 +91,9 @@
 		<Unit filename="/Users/michaelmaquera/school/a-star/src/Node.cpp">
 			<Option target="App"/>
 		</Unit>
+		<Unit filename="/Users/michaelmaquera/school/a-star/src/gridNode.cpp">
+			<Option target="App"/>
+		</Unit>
 		<Unit filename="/Users/michaelmaquera/school/a-star/src/main.cpp">
 			<Option target="App"/>
 		</Unit>

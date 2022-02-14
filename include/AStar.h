@@ -1,5 +1,3 @@
-
-
 #ifndef PATH_FINDING_ASTAR_H
 #define PATH_FINDING_ASTAR_H
 #include <chrono>

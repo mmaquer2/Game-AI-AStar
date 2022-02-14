@@ -73,34 +73,6 @@ Node::Node(int x, int y) {
 	}
 
 
-	int Node::getF() {
-		return f;
-	}
-
-	int Node::getH() {
-		return h;
-	}
-
-	int Node::getG() {
-		return g;
-	}
-
-
-	int Node::setH(int newH){
-		h = newH;
-		return h;
-	};
-
-	int Node::setG(int newG){
-		g = newG;
-		return g;
-	};
-
-	int Node::setF(int newF){
-		f = newF;
-		return f;
-	}
-
 Node::Node(Node **pNode) {
 
 }
@@ -111,7 +83,7 @@ Node::Node(array<int, 2> *pArray) {
 
 Node::Node(Node *pNode) {
 
-}
+};
 
 
 
