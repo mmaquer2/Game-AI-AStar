@@ -47,6 +47,10 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     vector<Node> closedSet; //container for tracking exhausted nodes
     vector<Node> unPassable; //container for holding discovered unpassable noes
 
+    //unordered_map<Node, int> cameFrom;
+    //unordered_map<Node, int> gScore;
+    //unordered_map<Node, int> fScore;
+
     int startX, startY, endX, endY;
     startX = start[0];
     startY = start[1];
@@ -63,6 +67,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     Node startNode = nodeGraph.graph[startX][startY];  //get the starting node from the graph
     Node endNode = nodeGraph.graph[endX][endY];  //get the end node from the graph
 
+    //gScore[startNode] = 0;
+
     //check if start and end nodes are passable
     if(!startNode.passable || !endNode.passable){
         cout <<" ERROR: selected a unpassable node as the start or end node" << endl;
@@ -78,6 +84,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
         //find the index of the lowest f value node, in the openSet
         int currentIndex = findLowestFValue(openSet);
+
         Node currentNode = openSet[currentIndex];
         cout << "selected a new current node" << currentNode.xCoord << currentNode.yCoord << endl;
         currentNode.expanded = true; // set the current node expanded flag to true
@@ -156,27 +163,17 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         cout<< "temp h: "<< tempNeighbor.h << endl;
                         cout<< "temp f: "  << tempNeighbor.f << endl;
 
+                       int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord);
+                       bool openListStatus = searchOpenList(tempNeighbor, openSet);
+                       //check if the new cost is less than the neighbor or is not in the open list
+                       if ((tentativeCost <  currentNode.g) || !openListStatus ) {
+                           cout << "--neighbor added to open set--" << endl;
 
-
-                       //check if tempNeighbor is in openSet
-
-                       //if not in open set add to open set and calculate f,g,h values
-                       //if( !searchOpenList(tempNeighbor,openSet)){
-
-                           //openSet.push_back(tempNeighbor);
-
-                      // }
-                       //else {
-
-                           if ((tempNeighbor.f <  currentNode.f) ) {
-                               cout << "--neighbor added to open set--" << endl;
-                               // if the neighbor node has a lower f value add it to the open set
-                               openSet.push_back(tempNeighbor);
-
-                           }
-
-                       //}
-
+                           //recalculate f,g,h values
+                           
+                           // if the neighbor node has a lower f value add it to the open set
+                           openSet.push_back(tempNeighbor);
+                       }
 
                     }
                 }
@@ -377,6 +374,20 @@ int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
     int gValue = (dx + dy) + weight;
     return gValue;
 
+}
+
+int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int neighborY) {
+    int dValue =0;
+    int dx = fabs( currentX - neighborX);
+    int dy = fabs(currentX - neighborY);
+
+    if(dx > dy){
+        dValue = 14 * dy + 10*(dx - dy);
+    } else{
+        dValue = 14 * dx + 10*(dy - dx);
+    }
+
+    return dValue;
 }
 
 

@@ -38,7 +38,8 @@ public:
 
     bool searchOpenList(Node input, vector<Node> closedSet);
 
-    Node calculateBestFOfNeighbors();
+    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY);
+
 };
 
 
