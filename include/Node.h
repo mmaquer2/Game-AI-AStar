@@ -14,7 +14,6 @@ class Node {
 
 public:
 
-
     Node(int x, int y);
 
     Node(Node **pNode);
@@ -43,10 +42,6 @@ public:
 
 	array<int ,2> getLocation();
 	int calculateNeighbors();
-
-
-    private:
-
 
 
 

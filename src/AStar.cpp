@@ -29,9 +29,16 @@ AStar::AStar() {
 
     vector<vector<char>> inputMap;
     string loc;
+    string hType;
+    string mode;
     string modeType, heuristicType;
     int start[2], end[2];
 
+    cout << "enter the heuristic type: m = manhattan, l = linear" << endl;
+    cin>>hType;
+    cout << "enter the output map type: a = all, e = expanded, s = standard" << endl;
+    cin >> mode;
+    
     //cout << "Enter the location of the file:";
     //cin >> loc;
     //readMap(loc,inputMap);
@@ -43,25 +50,18 @@ AStar::AStar() {
     cout << "the input map is:\n";
     PrintMap(inputMap);
 
-    //modeType = "Standard";
-    //eMode mode = convertMode(modeType);
-    //heuristicType = "Manhattan";
-    //eHeuristic heuristic = convertHeuristic(heuristicType);
-
     // Start Coordinates:
     start[0] = 0;
     start[1] = 0;
     cout << endl;
 
     //End Coordinates:
-    end[0] = 3;   // height
-    end[1] = 3; // width
+    end[0] = 4;   // height
+    end[1] = 4; // width
 
-    findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
+    findPath(inputMap, start, end, "All", "manhattan", nodeGraph);
 
 }
-
-
 
 // A-star find path function
 void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *destination, string mode, string heuristic,
@@ -138,16 +138,10 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
             // test to print entire final map
 
-            cout << "printing nodes after end." << endl;
-            for (auto const& element : cameFrom){
-                cout<< "key: "<< element.first.x << element.first.y << " value: ";
-                cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
-            }
-
             //cout << "printing nodes after end." << endl;
-            //for (auto const& element : cameFrom){
+           // for (auto const& element : cameFrom){
                // cout<< "key: "<< element.first.x << element.first.y << " value: ";
-                //cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
+               // cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
             //}
 
             // reconstruct the path working backwards
@@ -164,13 +158,6 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             temp = cameFrom[temp];
             finalMap.push_back(temp);
 
-            //cout << "map size: " << finalMap.size() << endl;
-
-            // print path onto output map
-            for(int i = 0; i < finalMap.size(); i++){
-                gridNode curr = finalMap[i];
-                outputMap[curr.x][curr.y] = '+';
-            }
             break;
         }
 
@@ -197,7 +184,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
                            //calculate f,g,h values
                            tempNeighbor.g = tentativeCost;
-                           tempNeighbor.h = manhattanDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY,tempNeighbor.nodeCost);
+                           if(heuristic == "manhattan"){
+                               tempNeighbor.h = manhattanDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY,tempNeighbor.nodeCost);
+                           } else {
+                               tempNeighbor.h = linearDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY,tempNeighbor.nodeCost);
+                           }
+
                            tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
 
                            //set parent and neighbor node relationships
@@ -238,31 +230,27 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     }
     else {
 
-        //Display Modes:
-        // Just display path
-        if (mode == "Standard") {
-           // outputMap[startX][startY] = 's';
-           // outputMap[endX][endY] = 'd';
-
-        }
-
         //display path and expanded nodes
         if (mode == "Expanded") {
+            //iterate through the examined/modified inputMap and
+            for(int i = 0; i < nodeGraph.graph.size(); i++){
 
-           // for(auto temp : closedSet){
-            //    outputMap[temp.xCoord][temp.yCoord] = '+';
-           // }
+                for(int j = 0; j < nodeGraph.graph[i].size();j++){
+                    Node temp = nodeGraph.graph[i][j];
 
+                    //set expanded nodes
+                    if(temp.expanded){
+                        outputMap[i][j] = 'e';
+                    }
+
+                }
+            }
 
         }
 
         //display path, expanded nodes, and touched nodes
         if (mode == "All") {
 
-            //write the final path to the output map
-            for(auto temp : closedSet){
-               // outputMap[temp.xCoord][temp.yCoord] = '+';
-            }
 
             //iterate through the examined/modified inputMap and
             for(int i = 0; i < nodeGraph.graph.size(); i++){
@@ -270,18 +258,26 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 for(int j = 0; j < nodeGraph.graph[i].size();j++){
                     Node temp = nodeGraph.graph[i][j];
 
-                    //set discovered nodes
-                    if(temp.discovered){
-                        //outputMap[i][j] = 't';
-                    }
-
                     //set expanded nodes
                     if(temp.expanded){
-                       // outputMap[i][j] = 'e';
+                        outputMap[i][j] = 'e';
                     }
+
+                    //set discovered nodes
+                    if(temp.discovered){
+                        outputMap[i][j] = 't';
+                    }
+
+
 
                 }
             }
+        }
+
+        // print path onto output map
+        for(int i = 0; i < finalMap.size(); i++){
+            gridNode curr = finalMap[i];
+            outputMap[curr.x][curr.y] = '+';
         }
 
         //set start and end nodes on the output map
@@ -399,14 +395,6 @@ int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int nei
     return dValue;
 }
 
-//function to return the final best path in terms of x,y values
-vector<array<int,2>> makePath(unordered_map<int, int> , Node current){
-    vector<array<int,2>> finalPath;
-
-
-
-    return finalPath;
-}
 
 
 
