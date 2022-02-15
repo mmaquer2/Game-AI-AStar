@@ -1,6 +1,6 @@
 #include "../include/AStar.h"
 
-//create custom grid node for unordered map
+//create custom grid node for unordered map container
 struct gridNode {
     int x;
     int y;
@@ -54,8 +54,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 4;
-    end[1] = 4;
+    end[0] = 3;   // height
+    end[1] = 3; // width
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -104,7 +104,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     bool pathDiscovered = false; // set discovered path boolean to false
 
     gridNode star = {startX, startY};
-    cameFrom[star] = star;
+    //cameFrom[star] = star;
 
     //start path search
     while (!openSet.empty()) {
@@ -126,12 +126,6 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         }
         currentNode.f = currentNode.g + currentNode.h + currentNode.nodeCost;
 
-       // cout << "current node data" << endl;
-        //cout << currentNode.xCoord << "," << currentNode.yCoord << endl;
-       // cout<< " current g: "<< currentNode.g;
-       // cout<< " current h: "<< currentNode.h;
-       // cout<< " current f: "  << currentNode.f << endl;
-
         //pass back the node reference to the graph matrix
         int x = currentNode.xCoord;
         int y = currentNode.yCoord;
@@ -150,37 +144,33 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
             }
 
+            //cout << "printing nodes after end." << endl;
+            //for (auto const& element : cameFrom){
+               // cout<< "key: "<< element.first.x << element.first.y << " value: ";
+                //cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
+            //}
 
-            //combine these two loops to create the path...?
-            cout << "printing nodes after end." << endl;
-            for (auto const& element : cameFrom){
-                cout<< "key: "<< element.first.x << element.first.y << " value: ";
-                cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
-
-
-
-
-            }
-
+            // reconstruct the path working backwards
             gridNode temp = {endX,endY}; //work backwards from the end node
             while(temp != star){
                 temp = cameFrom[temp];
                 finalMap.push_back(temp);
-                //TODO move to next node here?
                 cout <<"temp: " << temp.x << temp.y<< endl;
             }
-
-            //push the final value of the path
+            //push the final two nodes
             temp = cameFrom[temp];
             finalMap.push_back(temp);
 
-            cout << "map size: " << finalMap.size() << endl;
+            temp = cameFrom[temp];
+            finalMap.push_back(temp);
 
+            //cout << "map size: " << finalMap.size() << endl;
+
+            // print path onto output map
             for(int i = 0; i < finalMap.size(); i++){
                 gridNode curr = finalMap[i];
                 outputMap[curr.x][curr.y] = '+';
             }
-
             break;
         }
 
@@ -196,9 +186,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                     if(!tempNeighbor.passable){
                         unPassable.push_back(tempNeighbor);
                     } else{
+
                         //TODO fix cost of nodes:
                        int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord) + tempNeighbor.nodeCost;
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
+
+
                        //check if the new cost is less than the neighbor or is not in the open list
                        if ((tentativeCost <  currentNode.g) || !openListStatus ) {
 
