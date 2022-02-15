@@ -36,7 +36,7 @@ set (SRC_LIST
         ./src/Graph.cpp
         ./src/AStar.cpp
         ./src/main.cpp
-        ./src/gridNode.cpp)
+        )
 
 # create exccutable for main App
 add_executable(App ${SRC_LIST})

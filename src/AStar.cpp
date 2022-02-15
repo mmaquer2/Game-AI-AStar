@@ -1,7 +1,4 @@
-
 #include "../include/AStar.h"
-#include "gridNode.cpp"
-
 
 //create custom grid node for unordered map
 struct gridNode {
@@ -9,26 +6,20 @@ struct gridNode {
     int y;
 };
 
-//override equality operator for gridNode
+// override equality operator for gridNode
 bool operator==(const gridNode& lhs, const gridNode& rhs) {
     return lhs.x == rhs.x && lhs.y == rhs.y;
 }
-
-//gridNode hash function for unordered map
-struct gridHash {
-    std::size_t operator()(const gridNode& id) const noexcept {
-        return std::hash<int>()(id.x ^ (id.y << 1));
-    }
-};
-
-template<>
-struct std::hash<gridNode>
-{
-    std::size_t operator()(gridNode const& current) const noexcept
-    {
+// override not equals operator for gridNode
+bool operator!=(const gridNode& lhs, const gridNode& rhs){
+    return lhs.x != rhs.x && lhs.y != rhs.y;
+}
+// hash function for gridNode
+template<> struct std::hash<gridNode> {
+    std::size_t operator()(gridNode const& current) const noexcept {
         std::size_t h1 = std::hash<int>{}(current.x);
         std::size_t h2 = std::hash<int>{}(current.y);
-        return h1 ^ (h2 << 1); // or use boost::hash_combine
+        return h1 ^ (h2 << 16);
     }
 };
 
@@ -63,8 +54,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 2;
-    end[1] = 2;
+    end[0] = 4;
+    end[1] = 4;
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -80,22 +71,15 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     vector<Node> closedSet; //container for tracking exhausted nodes
     vector<Node> unPassable; //container for holding discovered unpassable noes
 
-    vector<gridNode> finalMap;
-    vector<vector<char>> outputMap = inputMap;
+    vector<gridNode> finalMap; // vector to hold final map
+    vector<vector<char>> outputMap = inputMap; // copy input map
     unordered_map<gridNode, gridNode> cameFrom; // map <key, value pair>   hash(key) = value, container for backtracking nodes
-
-
-    //unordered_map<Node, int> gScore;
-    //unordered_map<Node, int> fScore;
 
     int startX, startY, endX, endY;
     startX = start[0];
     startY = start[1];
     endX = destination[0];
     endY = destination[1];
-
-    using namespace chrono;
-    steady_clock::time_point clock_begin = steady_clock::now(); // Start the timer
 
     //check if start and end node are in bounds
     if(!inBounds(startX, startY, nodeGraph.height, nodeGraph.width) ||
@@ -113,8 +97,14 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         return;
     }
 
+    using namespace chrono; // Start the timer
+    steady_clock::time_point clock_begin = steady_clock::now();
+
     openSet.push_back(startNode); //insert start node to open container
     bool pathDiscovered = false; // set discovered path boolean to false
+
+    gridNode star = {startX, startY};
+    cameFrom[star] = star;
 
     //start path search
     while (!openSet.empty()) {
@@ -136,11 +126,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         }
         currentNode.f = currentNode.g + currentNode.h + currentNode.nodeCost;
 
-        cout << "current node data" << endl;
-        cout << currentNode.xCoord << "," << currentNode.yCoord << endl;
-        cout<< " current g: "<< currentNode.g;
-        cout<< " current h: "<< currentNode.h;
-        cout<< " current f: "  << currentNode.f << endl;
+       // cout << "current node data" << endl;
+        //cout << currentNode.xCoord << "," << currentNode.yCoord << endl;
+       // cout<< " current g: "<< currentNode.g;
+       // cout<< " current h: "<< currentNode.h;
+       // cout<< " current f: "  << currentNode.f << endl;
 
         //pass back the node reference to the graph matrix
         int x = currentNode.xCoord;
@@ -152,63 +142,66 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             std::cout << "End node found!" << endl;
             pathDiscovered = true; //the closed set now contains the final path from start to finish
 
-            gridNode star, en;
-            star.x = startX;
-            star.y = startY;
-            en.x = endY;
-            en.y = endY;
+            // test to print entire final map
 
-            // make best path map from current node
-             //container for final path
-
-            //test to print entire
             cout << "printing nodes after end." << endl;
             for (auto const& element : cameFrom){
                 cout<< "key: "<< element.first.x << element.first.y << " value: ";
-               std::cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
+                cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
             }
 
-            gridNode temp;
-            temp.x = currentNode.xCoord;
-            temp.y = currentNode.yCoord;
-            while(temp.x != star.x && temp.y != star.y){
+
+            //combine these two loops to create the path...?
+            cout << "printing nodes after end." << endl;
+            for (auto const& element : cameFrom){
+                cout<< "key: "<< element.first.x << element.first.y << " value: ";
+                cout << element.second.x << "," << element.second.y << endl;  // Write to file or whatever you want to do
+
+
+
+
+            }
+
+            gridNode temp = {endX,endY}; //work backwards from the end node
+            while(temp != star){
                 temp = cameFrom[temp];
-                cout <<"temp: " << temp.x << temp.y<< endl;
                 finalMap.push_back(temp);
+                //TODO move to next node here?
+                cout <<"temp: " << temp.x << temp.y<< endl;
             }
 
+            //push the final value of the path
+            temp = cameFrom[temp];
+            finalMap.push_back(temp);
 
+            cout << "map size: " << finalMap.size() << endl;
 
             for(int i = 0; i < finalMap.size(); i++){
-                gridNode temp = finalMap[i];
-                outputMap[temp.x][temp.y] = '+';
-
+                gridNode curr = finalMap[i];
+                outputMap[curr.x][curr.y] = '+';
             }
 
-
-            //vector<Node> completePath = makePath(startNode, endNode);  //reconstruct the final path from start to end
             break;
         }
 
         // Scan through the all neighbors of the current node
         for (int i = 0; i < currentNode.neighbors.size() ; ++i) {
             array<int, 2> tempCoors = currentNode.neighbors[i]; // get the coordinates of the neighbor
-
             //check if the neighbor is valid within the graph boundary and is passable
             if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
-
                 //check if this neighbor node is already in the closed list
                 if(!searchClosedList(tempNeighbor,closedSet)){
                     tempNeighbor.discovered = true; //set the neighbor node to discovered
-
                     if(!tempNeighbor.passable){
                         unPassable.push_back(tempNeighbor);
                     } else{
+                        //TODO fix cost of nodes:
                        int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord) + tempNeighbor.nodeCost;
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
                        //check if the new cost is less than the neighbor or is not in the open list
                        if ((tentativeCost <  currentNode.g) || !openListStatus ) {
+
                            //calculate f,g,h values
                            tempNeighbor.g = tentativeCost;
                            tempNeighbor.h = manhattanDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY,tempNeighbor.nodeCost);
@@ -222,21 +215,16 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                            //pass reference back into graph matrix
                            nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
 
-                           cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
+                           //cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
 
                            //pass current and neighbor nodes into cameFrom hash map
-                           gridNode curr, neighbor;
-                           curr.x = currentNode.xCoord;
-                           curr.y = currentNode.yCoord;
-                           neighbor.x = tempNeighbor.xCoord;
-                           neighbor.y = tempNeighbor.yCoord;
-
+                           gridNode curr = {currentNode.xCoord, currentNode.yCoord };
+                           gridNode neighbor = { tempNeighbor.xCoord, tempNeighbor.yCoord};
                            cameFrom[neighbor] = curr;
 
                            openSet.push_back(tempNeighbor); // add neighbor node to the open set
 
                        }
-
                     }
                 }
             }
@@ -257,13 +245,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     }
     else {
 
-         // copy inputMap
-
-        //just display the path
+        //Display Modes:
+        // Just display path
         if (mode == "Standard") {
            // outputMap[startX][startY] = 's';
            // outputMap[endX][endY] = 'd';
-
 
         }
 
@@ -317,8 +303,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
 }
 
-
-
+// check if a map node is in bounds of the map
 bool AStar::inBounds(int x, int y, int height,int width) {
     if( (x >= 0) &&
         (y >= 0) &&
@@ -326,11 +311,13 @@ bool AStar::inBounds(int x, int y, int height,int width) {
         (y <= height ) &&
         (x <= width ) &&
         (y <= width ))
-
-    {return true;}
-    else {return false;}
+    {return true;
+    }
+    else {return false;
+    }
 }
 
+// calculate the manhattan distance
 int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
@@ -340,7 +327,7 @@ int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
 
 }
 
-
+// calculate teh linear distance
 int AStar::linearDistance(int x, int y, int endX, int endY,int weight) {
 
     int dx = fabs( x - endX);
@@ -350,13 +337,6 @@ int AStar::linearDistance(int x, int y, int endX, int endY,int weight) {
     return result;
 }
 
-int AStar::getHeight() {
-    return graphHeight;
-}
-
-int AStar::getWidth() {
-    return graphWidth;
-}
 
 // helper function to find the current node with the lowest f value in the open set
 int AStar::findLowestFValue(vector<Node> input) {
@@ -369,8 +349,8 @@ int AStar::findLowestFValue(vector<Node> input) {
     if(input.size() == 1){
         lowestIndex = 0;
         return 0;
-
     }
+
     //search for the lowest f value in the open set vector
     for(int i = 0; i < input.size(); i++){
         if(input[i].f < min){
@@ -382,7 +362,7 @@ int AStar::findLowestFValue(vector<Node> input) {
     return lowestIndex;
 }
 
-//function to search the open list for neighbor nodes
+// function to search the open list for neighbor nodes
 bool AStar::searchOpenList(Node input,vector<Node> openSet ) {
     bool foundStatus = false;
     for(auto temp : openSet){
@@ -397,7 +377,7 @@ bool AStar::searchOpenList(Node input,vector<Node> openSet ) {
 }
 
 
-//function to search the closed list for present nodes
+// function to search the closed list for present nodes
 bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
     bool foundStatus = false;
     for(auto temp : closedSet){
@@ -411,15 +391,7 @@ bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
     return foundStatus;
 }
 
-int AStar::gValueDistance(int x, int y, int startX, int startY,int weight) {
-    int dx = fabs( x - startX);
-    int dy = fabs(y - startY);
-    int gValue = (dx + dy) + weight;
-    return gValue;
-
-}
-
-//calculate the current distance to neighbor values
+// calculate the current node's distance to a neighbor node
 int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int neighborY) {
     int dValue =0;
     int dx = fabs( currentX - neighborX);
@@ -437,7 +409,6 @@ int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int nei
 //function to return the final best path in terms of x,y values
 vector<array<int,2>> makePath(unordered_map<int, int> , Node current){
     vector<array<int,2>> finalPath;
-
 
 
 

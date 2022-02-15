@@ -29,43 +29,31 @@ Graph::Graph(std::vector<std::vector<char>>& input) {
 			}
 
 			//std::cout << temp << std::endl;
-			std::cout << "new node added from  " << i << " , " << j << " cost: " << tempNode.nodeCost << " passable: " << tempNode.passable << endl;
-			
-			//add node to the graph vector
-			
+			//std::cout << "new node added from  " << i << " , " << j << " cost: " << tempNode.nodeCost << " passable: " << tempNode.passable << endl;
+
+            //add node to the graph vector
 			rowArr.push_back(tempNode); //add the tempNode to the current row
 		}
 
 		graph.push_back(rowArr); //push the current row back onto the graph
 	}
 
-
-    //set the height and width of the graph to check boundries
-    //height = 4;
-    //width = 4;
-
+    //set the height and width of the graph to check boundaries
     height = graph.size() -1 ;
     width = graph[0].size()-1;
-
     cout << "graph height: " << height << endl;
     cout << "graph width: " << width << endl;
 
     findNodeNeighbors(); //find all neighbor nodes in the graph
 
-
 }
 
-
+// calculate all neighbors for the graph
 void Graph::findNodeNeighbors() {
-
-	//have each node calculate its own neighbors in the graph
 	for (int i = 0; i < graph.size(); i++) {
 		for (int j = 0; j < graph[i].size(); j++) {
-
 			graph[i][j].calculateNeighbors();
-
 		}
-
 	}
 
 }

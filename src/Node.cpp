@@ -16,20 +16,16 @@ Node::Node(int x, int y) {
 		std::array<int ,2> cords;
 		cords[0] = xCoord;
 		cords[1] = yCoord;
-
-
 		return cords;
 	}
 
 	//helper function to obtain the neighbor x,y of the node object
 	int Node::calculateNeighbors() {
-
 		//cardinal direction neighbors:
 		std::array<int,2> right;
 		std::array<int, 2> left;
 		std::array<int, 2> up;
 		std::array<int, 2> down;
-
         //diagonal direction neighbors
         std::array<int,2> topRight;
         std::array<int, 2> topLeft;
@@ -74,11 +70,9 @@ Node::Node(int x, int y) {
 
 
 Node::Node(Node **pNode) {
-
 }
 
 Node::Node(array<int, 2> *pArray) {
-
 }
 
 Node::Node(Node *pNode) {

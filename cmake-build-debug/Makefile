@@ -201,30 +201,6 @@ src/Node.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/Node.cpp.s
 .PHONY : src/Node.cpp.s
 
-src/gridNode.o: src/gridNode.cpp.o
-.PHONY : src/gridNode.o
-
-# target to build an object file
-src/gridNode.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/gridNode.cpp.o
-.PHONY : src/gridNode.cpp.o
-
-src/gridNode.i: src/gridNode.cpp.i
-.PHONY : src/gridNode.i
-
-# target to preprocess a source file
-src/gridNode.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/gridNode.cpp.i
-.PHONY : src/gridNode.cpp.i
-
-src/gridNode.s: src/gridNode.cpp.s
-.PHONY : src/gridNode.s
-
-# target to generate assembly for a file
-src/gridNode.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/App.dir/build.make CMakeFiles/App.dir/src/gridNode.cpp.s
-.PHONY : src/gridNode.cpp.s
-
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -267,9 +243,6 @@ help:
 	@echo "... src/Node.o"
 	@echo "... src/Node.i"
 	@echo "... src/Node.s"
-	@echo "... src/gridNode.o"
-	@echo "... src/gridNode.i"
-	@echo "... src/gridNode.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

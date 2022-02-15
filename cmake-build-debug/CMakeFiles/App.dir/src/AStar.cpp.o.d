@@ -243,6 +243,4 @@ CMakeFiles/App.dir/src/AStar.cpp.o: \
   /Users/michaelmaquera/school/a-star/./include/../include/Node.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/array \
   /Users/michaelmaquera/school/a-star/./include/../include/Graph.h \
-  /Users/michaelmaquera/school/a-star/./include/Node.h \
-  /Users/michaelmaquera/school/a-star/src/gridNode.cpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/unordered_set
+  /Users/michaelmaquera/school/a-star/./include/Node.h

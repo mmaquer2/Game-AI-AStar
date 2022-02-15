@@ -13,33 +13,23 @@
 class AStar {
 
 public:
-
+    AStar();
     int graphHeight;
     int graphWidth;
 
-    AStar();
-
     void findPath(const vector<vector<char>> &inputMap, int *start, int *destination, string mode, string heuristic,
                   Graph nodeGraph);
-
-    int findLowestFValue(vector<Node> input);
+    vector<array<int,2>> makePath(unordered_map<int, int> , Node current);
 
     bool inBounds(int x, int y, int height,int width);
+    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY);
     int manhattanDistance(int x, int y, int endX, int endY, int weight);
     int linearDistance(int x, int y, int endX, int endY, int weight);
     int gValueDistance(int x, int y, int startX, int startY, int weight);
 
     bool searchClosedList(Node input, vector<Node> closedSet);
-
-    int getHeight();
-    int getWidth();
-
     bool searchOpenList(Node input, vector<Node> closedSet);
-
-    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY);
-
-    vector<array<int,2>> makePath(unordered_map<int, int> , Node current);
-
+    int findLowestFValue(vector<Node> input);
 
 };
 
