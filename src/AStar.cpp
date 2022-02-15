@@ -34,15 +34,27 @@ AStar::AStar() {
     string modeType, heuristicType;
     int start[2], end[2];
 
-    cout << "enter the heuristic type: m = manhattan, l = linear" << endl;
-    cin>>hType;
-    cout << "enter the output map type: a = all, e = expanded, s = standard" << endl;
-    cin >> mode;
-    
     //cout << "Enter the location of the file:";
     //cin >> loc;
+
     //readMap(loc,inputMap);
     readMap("/Users/michaelmaquera/school/a-star/data/project1.txt", inputMap);
+
+    //cout << "enter the heuristic type: m = manhattan, l = linear" << endl;
+    //cin>>hType;
+    //cout << "enter the output map type: a = all, e = expanded, s = standard" << endl;
+    //cin >> mode;
+
+    cout << "enter start x"<< endl;
+
+    cout << "enter start y" << endl;
+
+
+    cout <<"center end x" << endl;
+
+    cout << "enter end y" << endl;
+
+
 
     Graph nodeGraph(inputMap);// create graph of nodes
 
@@ -56,8 +68,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 4;   // height
-    end[1] = 4; // width
+    end[0] = 4; // height
+    end[1] = 3; // width
 
     findPath(inputMap, start, end, "All", "manhattan", nodeGraph);
 
@@ -169,7 +181,9 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
                 //check if this neighbor node is already in the closed list
                 if(!searchClosedList(tempNeighbor,closedSet)){
+
                     tempNeighbor.discovered = true; //set the neighbor node to discovered
+
                     if(!tempNeighbor.passable){
                         unPassable.push_back(tempNeighbor);
                     } else{
@@ -177,7 +191,6 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         //TODO fix cost of nodes:
                        int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord) + tempNeighbor.nodeCost;
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
-
 
                        //check if the new cost is less than the neighbor or is not in the open list
                        if ((tentativeCost <  currentNode.g) || !openListStatus ) {
@@ -258,14 +271,14 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 for(int j = 0; j < nodeGraph.graph[i].size();j++){
                     Node temp = nodeGraph.graph[i][j];
 
-                    //set expanded nodes
-                    if(temp.expanded){
-                        outputMap[i][j] = 'e';
-                    }
-
                     //set discovered nodes
                     if(temp.discovered){
                         outputMap[i][j] = 't';
+                    }
+
+                    //set expanded nodes
+                    if(temp.expanded){
+                        outputMap[i][j] = 'e';
                     }
 
 
