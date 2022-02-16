@@ -68,8 +68,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 4; // height
-    end[1] = 3; // width
+    end[0] = 5; // width (x)
+    end[1] = 6; // height (y)
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -226,8 +226,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     double seconds = double(time_span.count()) * steady_clock::period::num / steady_clock::period::den;
 
     std::cout << endl;
-    std::cout << "It took " << seconds << " seconds.";
-    std::cout << endl;
+    std::cout << "Elapsed Time: " << seconds << " seconds.";
 
     if (!pathDiscovered) {
         cout << "A path could not be found with the given graph" << endl;
@@ -285,7 +284,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         outputMap[endX][endY] = 'd';
 
         std::cout << endl;
-        std::cout << "the output map is:";
+        std::cout << "The Output Map:";
         std::cout << endl;
         PrintMap(outputMap);
     }
