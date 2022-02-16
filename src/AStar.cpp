@@ -68,8 +68,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 5; // width (x)
-    end[1] = 6; // height (y)
+    end[0] = 10; // width (x)
+    end[1] = 10; // height (y)
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -148,42 +148,20 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             std::cout << "End node found!" << endl;
             pathDiscovered = true; //the closed set now contains the final path from start to finish
 
-            // reconstruct the path working backwards
+            // reconstruct the path working backwards from the end node
             gridNode temp = {endX,endY}; //work backwards from the end node
-            //while(temp != star){
-                //temp = cameFrom[temp];
-                //finalMap.push_back(temp);
-                //cout <<"temp: " << temp.x << temp.y<< endl;
-            //}
-
-            /*
-         //push the final two nodes
-         temp = cameFrom[temp];
-         finalMap.push_back(temp);
-         temp = cameFrom[temp];
-         finalMap.push_back(temp);
-         temp = cameFrom[temp];
-         finalMap.push_back(temp);
-         temp = cameFrom[temp];
-         finalMap.push_back(temp);
-         temp = cameFrom[temp];
-         finalMap.push_back(temp);
-         temp = cameFrom[temp];
-         finalMap.push_back(temp);
-          */
-
             int count = 0;
-            int maxLengthOfpath = graphHeight * graphWidth;
+            int maxLengthOfpath = graphHeight * graphWidth; //the path will not be greater than the all nodes in the graph
             while(count != maxLengthOfpath){
-
+                if(temp == star){
+                   break;
+                }
                 temp = cameFrom[temp];
                 finalMap.push_back(temp);
                 count = count + 1;
-
             }
 
-
-            break;
+            break; //break pathfinding
         }
 
         // Scan through the all neighbors of the current node
