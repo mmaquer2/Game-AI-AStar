@@ -150,16 +150,38 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
             // reconstruct the path working backwards
             gridNode temp = {endX,endY}; //work backwards from the end node
-            while(temp != star){
+            //while(temp != star){
+                //temp = cameFrom[temp];
+                //finalMap.push_back(temp);
+                //cout <<"temp: " << temp.x << temp.y<< endl;
+            //}
+
+            /*
+         //push the final two nodes
+         temp = cameFrom[temp];
+         finalMap.push_back(temp);
+         temp = cameFrom[temp];
+         finalMap.push_back(temp);
+         temp = cameFrom[temp];
+         finalMap.push_back(temp);
+         temp = cameFrom[temp];
+         finalMap.push_back(temp);
+         temp = cameFrom[temp];
+         finalMap.push_back(temp);
+         temp = cameFrom[temp];
+         finalMap.push_back(temp);
+          */
+
+            int count = 0;
+            int maxLengthOfpath = graphHeight * graphWidth;
+            while(count != maxLengthOfpath){
+
                 temp = cameFrom[temp];
                 finalMap.push_back(temp);
-                cout <<"temp: " << temp.x << temp.y<< endl;
+                count = count + 1;
+
             }
-            //push the final two nodes
-            temp = cameFrom[temp];
-            finalMap.push_back(temp);
-            temp = cameFrom[temp];
-            finalMap.push_back(temp);
+
 
             break;
         }
