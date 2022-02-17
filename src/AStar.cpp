@@ -54,9 +54,12 @@ AStar::AStar() {
 
     cout << "enter end y" << endl;
 
-
-
     Graph nodeGraph(inputMap);// create graph of nodes
+
+    if(nodeGraph.width != nodeGraph.height){
+        cout <<" ERROR: you must submit a graph with equal width and height" << endl;
+        return;
+    }
 
     cout << endl;
     cout << "the input map is:\n";
@@ -68,8 +71,8 @@ AStar::AStar() {
     cout << endl;
 
     //End Coordinates:
-    end[0] = 10; // width (x)
-    end[1] = 10; // height (y)
+    end[0] = 21; // width (x)
+    end[1] = 59; // height (y)
 
     findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
 
@@ -295,10 +298,10 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 bool AStar::inBounds(int x, int y, int height,int width) {
     if( (x >= 0) &&
         (y >= 0) &&
-        (x <= height ) &&
-        (y <= height ) &&
-        (x <= width ) &&
-        (y <= width ))
+        ( x <= width) && (y <= height) && ( x<= height ) && (y<=width)
+
+        )
+
     {return true;
     }
     else {return false;
