@@ -22,15 +22,15 @@ Node::Node(int x, int y) {
 	//helper function to obtain the neighbor x,y of the node object
 	int Node::calculateNeighbors() {
 		//cardinal direction neighbors:
-		std::array<int,2> right;
-		std::array<int, 2> left;
-		std::array<int, 2> up;
-		std::array<int, 2> down;
+		std::array<int,2> right{};
+		std::array<int, 2> left{};
+		std::array<int, 2> up{};
+		std::array<int, 2> down{};
         //diagonal direction neighbors
-        std::array<int,2> topRight;
-        std::array<int, 2> topLeft;
-        std::array<int, 2> bottomRight;
-        std::array<int, 2> bottomLeft;
+        std::array<int,2> topRight{};
+        std::array<int, 2> topLeft{};
+        std::array<int, 2> bottomRight{};
+        std::array<int, 2> bottomLeft{};
 
         topRight[0] = xCoord + 1;
         topRight[1] = yCoord + 1;

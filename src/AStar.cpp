@@ -33,26 +33,30 @@ AStar::AStar() {
     string mode;
     string modeType, heuristicType;
     int start[2], end[2];
+    int sX, sY, eX, eY;
 
-    //cout << "Enter the location of the file:";
-    //cin >> loc;
+    cout << "Enter the location of the file:";
+    cin >> loc;
 
-    //readMap(loc,inputMap);
-    readMap("/Users/michaelmaquera/school/a-star/data/project1.txt", inputMap);
+    //"/Users/michaelmaquera/school/a-star/data/project1.txt"
+    readMap(loc, inputMap);
 
-    //cout << "enter the heuristic type: m = manhattan, l = linear" << endl;
-    //cin>>hType;
-    //cout << "enter the output map type: a = all, e = expanded, s = standard" << endl;
-    //cin >> mode;
+    cout << "enter the heuristic type: m = manhattan, l = linear" << endl;
+    cin>>hType;
+    cout << "enter the output map type: a = all, e = expanded, s = standard" << endl;
+    cin >> mode;
 
-    cout << "enter start x"<< endl;
+    cout << "Enter start x"<< endl;
+    cin >> sX;
 
-    cout << "enter start y" << endl;
+    cout << "Enter start y:" << endl;
+    cin >> sY;
 
+    cout <<"Enter end x" << endl;
+    cin >> eX;
 
-    cout <<"center end x" << endl;
-
-    cout << "enter end y" << endl;
+    cout << "Enter end y" << endl;
+    cin >> eY;
 
     Graph nodeGraph(inputMap);// create graph of nodes
 
@@ -66,15 +70,15 @@ AStar::AStar() {
     PrintMap(inputMap);
 
     // Start Coordinates:
-    start[0] = 0;
-    start[1] = 0;
+    start[0] = sX;
+    start[1] = sY;
     cout << endl;
 
     //End Coordinates:
-    end[0] = 21; // width (x)
-    end[1] = 59; // height (y)
+    end[0] = eX; // width (x)
+    end[1] = eY; // height (y)
 
-    findPath(inputMap, start, end, "Standard", "manhattan", nodeGraph);
+    findPath(inputMap, start, end, mode, hType, nodeGraph);
 
 }
 
