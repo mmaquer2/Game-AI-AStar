@@ -187,7 +187,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 
                     if(!tempNeighbor.passable){
                         unPassable.push_back(tempNeighbor);
-                    } else{
+                    } else {
 
                        int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord, tempNeighbor.nodeCost);
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
@@ -243,7 +243,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     else {
 
         //display path and expanded nodes
-        if (mode == "Expanded") {
+        if (mode == "e") {
             //iterate through the examined/modified inputMap and
             for(int i = 0; i < nodeGraph.graph.size(); i++){
 
@@ -261,7 +261,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         }
 
         //display path, expanded nodes, and touched nodes
-        if (mode == "All") {
+        if (mode == "a") {
 
             //iterate through the examined/modified inputMap and
             for(int i = 0; i < nodeGraph.graph.size(); i++){
