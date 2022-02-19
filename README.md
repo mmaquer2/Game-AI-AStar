@@ -5,6 +5,12 @@
 ## Self Reflection:
   - Was able to complete all core parts of the assignment, the challenging portion was creating a custom hash function to use with an unordered grid, as c++ only supports primitive types with their containers
 
+## Features:
+  - diagonal movement
+  - weighted nodes, including 0
+  - user input for manhattan and linear heuristic
+  - user input for output map, expanded, all, or standard modes
+
 ## Set up:
 	- Download program files on your machine
     - navigate to the downloaded diretory
