@@ -122,8 +122,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     openSet.push_back(startNode); //insert start node to open container
     bool pathDiscovered = false; // set discovered path boolean to false
 
+    //set the starting node for reconstructing the path
     gridNode star = {startX, startY};
-    //cameFrom[star] = star;
 
     //start path search
     while (!openSet.empty()) {
@@ -137,13 +137,15 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         closedSet.push_back(currentNode); //insert current node into the closedSet
 
         //calculate the f,g,h of the current node.
-        currentNode.g = distanceToNeighbor(currentNode.xCoord, currentNode.yCoord,startX,startY);
+        currentNode.g = distanceToNeighbor(currentNode.xCoord, currentNode.yCoord,startX,startY,currentNode.nodeCost);
         if(heuristic == "manhattan"){
             currentNode.h = manhattanDistance(currentNode.xCoord, currentNode.yCoord, endX, endY,currentNode.nodeCost);
         } else {
             currentNode.h = linearDistance(currentNode.xCoord, currentNode.yCoord, endX, endY, currentNode.nodeCost);
         }
-        currentNode.f = currentNode.g + currentNode.h + (currentNode.nodeCost *3);
+        currentNode.f = currentNode.g + (currentNode.nodeCost *currentNode.h * 2);
+
+        cout <<"Current: " << currentNode.xCoord << "," << currentNode.yCoord << "  g: "<< currentNode.g << " temp h: "<< currentNode.h << " temp f: "  << currentNode.f << endl;
 
         //pass back the node reference to the graph matrix
         int x = currentNode.xCoord;
@@ -158,8 +160,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             // reconstruct the path working backwards from the end node
             gridNode temp = {endX,endY}; //work backwards from the end node
             int count = 0;
-            int maxLengthOfpath = graphHeight * graphWidth; //the path will not be greater than the all nodes in the graph
-            while(count != maxLengthOfpath){
+            int maxPathLength = graphHeight * graphWidth; //the path will not be greater than the all nodes in the graph
+            while(count != maxPathLength){
                 if(temp == star){
                    break;
                 }
@@ -177,6 +179,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             //check if the neighbor is valid within the graph boundary and is passable
             if (inBounds(tempCoors[0], tempCoors[1], nodeGraph.height, nodeGraph.width)  ) {
                 Node tempNeighbor = nodeGraph.graph[tempCoors[0]][tempCoors[1]]; //get the current neighbor node
+
                 //check if this neighbor node is already in the closed list
                 if(!searchClosedList(tempNeighbor,closedSet)){
 
@@ -186,8 +189,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                         unPassable.push_back(tempNeighbor);
                     } else{
 
-                        //TODO fix cost of nodes:
-                       int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord) + (tempNeighbor.nodeCost *3);
+                       int tentativeCost = currentNode.g + distanceToNeighbor(currentNode.xCoord,currentNode.yCoord, tempNeighbor.xCoord,tempNeighbor.yCoord, tempNeighbor.nodeCost);
                        bool openListStatus = searchOpenList(tempNeighbor, openSet);
 
                        //check if the new cost is less than the neighbor or is not in the open list
@@ -201,7 +203,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                                tempNeighbor.h = linearDistance(tempNeighbor.xCoord, tempNeighbor.yCoord, endX, endY,tempNeighbor.nodeCost);
                            }
 
-                           tempNeighbor.f = tempNeighbor.g + tempNeighbor.h;
+                           tempNeighbor.f = tempNeighbor.g + (tempNeighbor.nodeCost * tempNeighbor.h);
 
                            //set parent and neighbor node relationships
                            tempNeighbor.parentNode = new Node(0,0);
@@ -211,7 +213,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                            //pass reference back into graph matrix
                            nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
 
-                           //cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
+                           cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
 
                            //pass current and neighbor nodes into cameFrom hash map
                            gridNode curr = {currentNode.xCoord, currentNode.yCoord };
@@ -302,14 +304,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
 bool AStar::inBounds(int x, int y, int height,int width) {
     if( (x >= 0) &&
         (y >= 0) &&
-        ( x <= width) && (y <= height) && ( x<= height ) && (y<=width)
-
-        )
-
-    {return true;
-    }
-    else {return false;
-    }
+        ( x <= width) &&
+        (y <= height) &&
+        ( x<= height) &&
+        (y<=width))
+    { return true; }
+    else { return false; }
 }
 
 // calculate the manhattan distance
@@ -317,7 +317,7 @@ int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
     int avgDiff = 10; // the avg difference of all nodes
-    int result = dx + dy;
+    int result = dx + dy + weight;
     return result;
 
 }
@@ -328,7 +328,7 @@ int AStar::linearDistance(int x, int y, int endX, int endY,int weight) {
     int dx = fabs( x - endX);
     int dy = fabs(y - endY);
 
-    int result =  sqrt(dx * dx + dy * dy);
+    int result =  sqrt(dx * dx + dy * dy) + weight;
     return result;
 }
 
@@ -387,7 +387,7 @@ bool AStar::searchClosedList(Node input,vector<Node> closedSet ) {
 }
 
 // calculate the current node's distance to a neighbor node
-int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int neighborY) {
+int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int neighborY, int weight) {
     int dValue =0;
     int dx = fabs( currentX - neighborX);
     int dy = fabs(currentY - neighborY);

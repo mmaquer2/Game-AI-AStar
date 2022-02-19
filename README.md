@@ -3,12 +3,11 @@
 - Demo for the A - Star algorithm in C++ for CS 5150 Game AI at Northeastern University
 
 ## Self Reflection:
-  - Was able to complete all core parts of the assignment
-  - The challenging portion was creating a custom hash function to use with an unordered grid, becasue c++ only supports primitive types with their containers
+  - Was able to complete all core parts of the assignment, the challenging portion was creating a custom hash function to use with an unordered grid, as c++ only supports primitive types with their containers
+
 ## Set up:
 	- Download program files on your machine
     - navigate to the downloaded diretory
-
 
 ## Run and Test Instructions:
     - Mac:
@@ -37,11 +36,14 @@
       1XX1
       X151
       1111
+    
+    - 
+  
 - Notes:
   - calculate cost of the new node
   - g = the movement cost to move from the starting point to a given square on the grid, following the path generated to get there.
   - h = the estimated movement cost to move from that given square on the grid to the final destination.This is often referred to as the heuristic,
-  - f = sum of g and h
+  - f = g + nodeCost * h
 
 ## Resources: 
 

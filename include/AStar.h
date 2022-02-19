@@ -22,7 +22,7 @@ public:
     vector<array<int,2>> makePath(unordered_map<int, int> , Node current);
 
     bool inBounds(int x, int y, int height,int width);
-    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY);
+    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY, int weight);
     int manhattanDistance(int x, int y, int endX, int endY, int weight);
     int linearDistance(int x, int y, int endX, int endY, int weight);
     int gValueDistance(int x, int y, int startX, int startY, int weight);
