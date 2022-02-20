@@ -3,9 +3,9 @@
 - Demo for the A-Star algorithm in C++ for CS 5150 Game AI at Northeastern University
 
 ## Self Reflection:
- - Completed all core parts of the assignment, creating a custom hash function to use with an unordered grid was challenging, as c++ only supports primitive types with their containers.
+ - Completed all core parts of the assignment. Creating a custom hash function to use with an unordered grid was challenging, as c++ only supports primitive types with their containers. I did not attempt to create a path smoothing solution into my program.
 
-## Features:
+### Features:
   - Diagonal movement
   - Weighted nodes, including 0
   - User input for manhattan and linear heuristics

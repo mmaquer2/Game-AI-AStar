@@ -236,7 +236,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     double seconds = double(time_span.count()) * steady_clock::period::num / steady_clock::period::den;
 
     std::cout << endl;
-    std::cout << "Elapsed Time: " << seconds << " seconds.";
+    std::cout << "Elapsed Time: " << seconds << " seconds." << endl;
 
     // program has failed to find a path if it reaches this line
     if (!pathDiscovered) {
