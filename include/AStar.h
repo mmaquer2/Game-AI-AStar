@@ -10,6 +10,16 @@
 #include "../include/Graph.h"
 #include <math.h>
 
+//create custom grid node for unordered map container
+struct gridNode {
+    int x;
+    int y;
+};
+
+
+
+
+
 class AStar {
 
 public:
@@ -30,6 +40,8 @@ public:
     bool searchClosedList(Node input, vector<Node> closedSet);
     bool searchOpenList(Node input, vector<Node> closedSet);
     int findLowestFValue(vector<Node> input);
+
+    void createOutputMap(string mode, Graph finalGraph, vector<vector<char>> outputMap, vector<gridNode> finalMap,int startX,int startY, int endX,int endY);
 
 };
 

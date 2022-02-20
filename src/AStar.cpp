@@ -1,11 +1,5 @@
 #include "../include/AStar.h"
 
-//create custom grid node for unordered map container
-struct gridNode {
-    int x;
-    int y;
-};
-
 // override equality operator for gridNode
 bool operator==(const gridNode& lhs, const gridNode& rhs) {
     return lhs.x == rhs.x && lhs.y == rhs.y;
@@ -22,11 +16,10 @@ template<> struct std::hash<gridNode> {
         return h1 ^ (h2 << 16);
     }
 };
-
-
 //AStar Constructor function
 AStar::AStar() {
 
+    //declare class variables
     vector<vector<char>> inputMap;
     string loc;
     string hType;
@@ -157,7 +150,7 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
             std::cout << "End node found!" << endl;
             pathDiscovered = true; //the closed set now contains the final path from start to finish
 
-            // reconstruct the path working backwards from the end node
+            //reconstruct the path working backwards from the end node
             gridNode temp = {endX,endY}; //work backwards from the end node
             int count = 0;
             int maxPathLength = graphHeight * graphWidth; //the path will not be greater than the all nodes in the graph
@@ -170,7 +163,12 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                 count = count + 1;
             }
 
-            break; //break pathfinding
+            //create the output map
+            createOutputMap(mode,nodeGraph,inputMap,finalMap,startX, startY,  endX, endY);
+
+            //break pathfinding, program complete
+            return;
+
         }
 
         // Scan through the all neighbors of the current node
@@ -237,66 +235,11 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
     std::cout << endl;
     std::cout << "Elapsed Time: " << seconds << " seconds.";
 
+    // program has failed to find a path if it reaches this line
     if (!pathDiscovered) {
         cout << "A path could not be found with the given graph" << endl;
     }
-    else {
 
-        //display path and expanded nodes
-        if (mode == "e") {
-            //iterate through the examined/modified inputMap and
-            for(int i = 0; i < nodeGraph.graph.size(); i++){
-
-                for(int j = 0; j < nodeGraph.graph[i].size();j++){
-                    Node temp = nodeGraph.graph[i][j];
-
-                    //set expanded nodes
-                    if(temp.expanded){
-                        outputMap[i][j] = 'e';
-                    }
-
-                }
-            }
-
-        }
-
-        //display path, expanded nodes, and touched nodes
-        if (mode == "a") {
-
-            //iterate through the examined/modified inputMap and
-            for(int i = 0; i < nodeGraph.graph.size(); i++){
-
-                for(int j = 0; j < nodeGraph.graph[i].size();j++){
-                    Node temp = nodeGraph.graph[i][j];
-
-                    //set discovered nodes
-                    if(temp.discovered){
-                        outputMap[i][j] = 't';
-                    }
-
-                    //set expanded nodes
-                    if(temp.expanded){
-                        outputMap[i][j] = 'e';
-                    }
-                }
-            }
-        }
-
-        // print path onto output map
-        for(int i = 0; i < finalMap.size(); i++){
-            gridNode curr = finalMap[i];
-            outputMap[curr.x][curr.y] = '+';
-        }
-
-        //set start and end nodes on the output map
-       outputMap[startX][startY] = 's';
-        outputMap[endX][endY] = 'd';
-
-        std::cout << endl;
-        std::cout << "The Output Map:";
-        std::cout << endl;
-        PrintMap(outputMap);
-    }
 
 }
 
@@ -322,7 +265,7 @@ int AStar::manhattanDistance(int x, int y, int endX, int endY,int weight) {
 
 }
 
-// calculate teh linear distance
+// calculate the linear distance
 int AStar::linearDistance(int x, int y, int endX, int endY,int weight) {
 
     int dx = fabs( x - endX);
@@ -399,6 +342,67 @@ int AStar::distanceToNeighbor(int currentX, int currentY, int neighborX, int nei
     }
 
     return dValue;
+}
+
+
+//create the output map based on the given path and found nodes
+void AStar::createOutputMap(string mode, Graph final, vector<vector<char>> outputMap,vector<gridNode> finalMap, int startX,int startY, int endX,int endY) {
+
+    //display path and expanded nodes
+    if (mode == "e") {
+        //iterate through the examined/modified inputMap and
+        for(int i = 0; i < final.graph.size(); i++){
+
+            for(int j = 0; j < final.graph[i].size();j++){
+                Node temp = final.graph[i][j];
+
+                //set expanded nodes
+                if(temp.expanded){
+                    outputMap[i][j] = 'e';
+                }
+
+            }
+        }
+
+    }
+
+    //display path, expanded nodes, and touched nodes
+    if (mode == "a") {
+
+        //iterate through the examined/modified inputMap and
+        for(int i = 0; i < final.graph.size(); i++){
+
+            for(int j = 0; j < final.graph[i].size();j++){
+                Node temp = final.graph[i][j];
+
+                //set discovered nodes
+                if(temp.discovered){
+                    outputMap[i][j] = 't';
+                }
+
+                //set expanded nodes
+                if(temp.expanded){
+                    outputMap[i][j] = 'e';
+                }
+            }
+        }
+    }
+
+    // print path onto output map
+    for(int i = 0; i < finalMap.size(); i++){
+        gridNode curr = finalMap[i];
+        outputMap[curr.x][curr.y] = '+';
+    }
+
+    //set start and end nodes on the output map
+    outputMap[startX][startY] = 's';
+    outputMap[endX][endY] = 'd';
+
+    std::cout << endl;
+    std::cout << "The Output Map:";
+    std::cout << endl;
+    PrintMap(outputMap);
+    
 }
 
 
