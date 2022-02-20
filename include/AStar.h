@@ -10,16 +10,13 @@
 #include "../include/Graph.h"
 #include <math.h>
 
-//create custom grid node for unordered map container
+// create custom grid node for the unordered map container
 struct gridNode {
     int x;
     int y;
 };
 
-
-
-
-
+// class to represent the A Star path finding program
 class AStar {
 
 public:
@@ -29,13 +26,11 @@ public:
 
     void findPath(const vector<vector<char>> &inputMap, int *start, int *destination, string mode, string heuristic,
                   Graph nodeGraph);
-    vector<array<int,2>> makePath(unordered_map<int, int> , Node current);
 
-    bool inBounds(int x, int y, int height,int width);
-    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY, int weight);
+    bool inBounds(int x, int y, int height,int width); // determines if a node is within legal bounds of the graph
+    int distanceToNeighbor(int currentX,int currentY, int neighborX, int neighborY, int weight); // calculate the distance between neighbor nodes
     int manhattanDistance(int x, int y, int endX, int endY, int weight);
     int linearDistance(int x, int y, int endX, int endY, int weight);
-    int gValueDistance(int x, int y, int startX, int startY, int weight);
 
     bool searchClosedList(Node input, vector<Node> closedSet);
     bool searchOpenList(Node input, vector<Node> closedSet);

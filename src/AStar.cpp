@@ -58,6 +58,9 @@ AStar::AStar() {
         return;
     }
 
+    graphWidth = nodeGraph.width; //pass height and width to A Star class
+    graphHeight = nodeGraph.height;
+
     cout << endl;
     cout << "the input map is:\n";
     PrintMap(inputMap);
@@ -402,7 +405,7 @@ void AStar::createOutputMap(string mode, Graph final, vector<vector<char>> outpu
     std::cout << "The Output Map:";
     std::cout << endl;
     PrintMap(outputMap);
-    
+
 }
 
 
