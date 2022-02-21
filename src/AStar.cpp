@@ -141,7 +141,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
         }
         currentNode.f = currentNode.g + (currentNode.nodeCost *currentNode.h * 2);
 
-        cout <<"Current: " << currentNode.xCoord << "," << currentNode.yCoord << "  g: "<< currentNode.g << " temp h: "<< currentNode.h << " temp f: "  << currentNode.f << endl;
+        //uncomment for current node details
+        //cout <<"Current: " << currentNode.xCoord << "," << currentNode.yCoord << "  g: "<< currentNode.g << " temp h: "<< currentNode.h << " temp f: "  << currentNode.f << endl;
 
         //pass back the node reference to the graph matrix
         int x = currentNode.xCoord;
@@ -214,7 +215,8 @@ void AStar::findPath(const vector<vector<char>> &inputMap, int *start, int *dest
                            //pass reference back into graph matrix
                            nodeGraph.graph[tempNeighbor.xCoord][tempNeighbor.yCoord] = tempNeighbor;
 
-                           cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
+                           //uncomment for tempNeighbor details
+                           //cout <<"neighbor: " <<tempNeighbor.xCoord << "," << tempNeighbor.yCoord << " temp g: "<< tempNeighbor.g << " temp h: "<< tempNeighbor.h << " temp f: "  << tempNeighbor.f << endl;
 
                            //pass current and neighbor nodes into cameFrom hash map
                            gridNode curr = {currentNode.xCoord, currentNode.yCoord };

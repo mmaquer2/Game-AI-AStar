@@ -27,8 +27,8 @@
 
     - Windows:
     - Using visual studio windows compiler:
-    - open the project folder to windows visual studio
-    - run and build project using the visual studio debugger to run main.cpp
+    - open the project folder in windows visual studio
+    - run and build project using the visual studio debugger on main.cpp
     - enter the entire path of the input file when prompted
 
     - Using cmake or cmake gui:
